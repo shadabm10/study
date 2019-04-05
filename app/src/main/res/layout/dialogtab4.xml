@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/allcurve_white"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <Button
+        android:id="@+id/create1"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/cancel_button"
+        android:clickable="true"
+        android:text="@string/create1"
+        android:textColor="@android:color/black"
+        />
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/cancel_button"
+        android:clickable="true"
+        android:text="@string/upload"
+        android:textColor="@android:color/black"
+        />
+
+    <Button
+        android:id="@+id/insert"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/cancel_button"
+        android:clickable="true"
+        android:text="@string/insert"
+        android:textColor="@android:color/black"
+        />
+
+    <Button
+        android:id="@+id/open"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/cancel_button"
+        android:clickable="true"
+        android:text="@string/open"
+        android:textColor="@android:color/black"
+        />
+
+
+
+
+
+</LinearLayout>
