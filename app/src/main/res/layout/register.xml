@@ -72,12 +72,12 @@
 
 
             <EditText
-                android:id="@+id/second"
+                android:id="@+id/last"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:drawablePadding="20dp"
                 android:paddingBottom="20dp"
                 android:drawableStart="@mipmap/user"
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:drawablePadding="20dp"
                 android:paddingBottom="20dp"
                 android:drawableStart="@mipmap/school"
@@ -138,6 +138,7 @@
                 />
 
             <RelativeLayout
+                android:id="@+id/rl_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

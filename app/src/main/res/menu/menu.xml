@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/cart"
+        android:enabled="true"
+        android:icon="@mipmap/studynotes"
+        android:title="Study Notes"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@mipmap/assessments"
+        android:title="Assessment"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@mipmap/timemanagement"
+        android:title="Time Management"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/profile1"
+        android:enabled="true"
+        android:icon="@mipmap/tipsntricks"
+        android:title="Tips and Tricks"
+        app:showAsAction="ifRoom" />
+</menu>

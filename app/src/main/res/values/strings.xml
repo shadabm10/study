@@ -40,7 +40,7 @@
     <string name="ten">10 mins</string>
     <string name="twenty">20 mins</string>
     <string name="setting">Settings</string>
-    <string name="suggest">Suggestion</string>
+    <string name="suggest">Folder</string>
     <string name="feedback">Feedback</string>
     <string name="report">Report</string>
     <string name="folder">Folder</string>
@@ -49,6 +49,7 @@
     <string name="audio">Audio</string>
     <string name="maths">Mathematics</string>
     <string name="edit">Edit</string>
+    <string name="name">Jon Dove</string>
     <string name="random1">Random</string>
     <string name="important">Important</string>
     <string name="random">Random/Important</string>
@@ -58,7 +59,26 @@
     <string name="change">Change background color</string>
     <string name="lorem">Lorem ipsum is a dummy text used to replace text in some areas just for the purpose of an example. It can be used in publishing and graphic design. It is used to demonstrate the graphics elements of a document, such as font, typography, and layout.</string>
     <string name="create1">Create Folder</string>
-    <string name="upload">Upload Document</string>
-    <string name="insert">Insert Image</string>
-    <string name="open">Open Notepad</string>
+    <string name="upload">Add Document</string>
+    <string name="insert">Add Image</string>
+    <string name="open">Add Video </string>
+    <string name="loading">Loading</string>
+    <string name="empty_first_name">Empty First Name</string>
+    <string name="empty_second_name">Empty Last Name</string>
+    <string name="empty_school_name">Empty School Name</string>
+    <string name="empty_email_name">Empty Email ID</string>
+    <string name="validate_email">Improper Email id </string>
+    <string name="password_empty">Empty Password </string>
+    <string name="check_network">Check Your Network Connection  </string>
+    <string name="pass_not_match">Password Not Match</string>
+    <string name="rePass">Empty Confirm Password</string>
+    <string name="otp_empty">OTP is Empty</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="cancel">cancel</string>
+    <string name="select_option">Select Option</string>
+    <string name="camera_permission_error">Camera Permission error</string>
+
+
+
 </resources>
