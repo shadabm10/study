@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -45,14 +48,16 @@ public class AddSubFolder extends RecyclerView.Adapter<AddSubFolder.PlanetViewHo
     ProgressDialog pd;
     StudyNotesFoldersOnClick studyNotesFoldersOnClick;
     String id;
+    FragmentManager fragmentManager;
 
     // Context context;
     // int [] imageId,imageId1,imageId2,imageId3,imageId4;
 
-    public AddSubFolder(ArrayList<FeedItem>feedItemList, Context context, ProgressDialog pd ,String id) {
+    public AddSubFolder(ArrayList<FeedItem>feedItemList, Context context, ProgressDialog pd , String id, FragmentManager fragmentManager) {
         this.feedItemList = feedItemList;
         this.context=context;
         this.pd=pd;
+        this.fragmentManager=fragmentManager;
         this.id=id;
         globalClass = ((GlobalClass) context.getApplicationContext());
         preference = new Shared_Preference(context);
@@ -87,7 +92,7 @@ public class AddSubFolder extends RecyclerView.Adapter<AddSubFolder.PlanetViewHo
         //holder.image.setColorFilter(R.color.terracotta);
         View rowView;
         //Context context = null;
-
+      //   String id=feedItemList.get(position).get
         holder.image.setImageResource(R.mipmap.folderdarkgery);
 
         String name=feedItemList.get(position).getNAME();
@@ -177,7 +182,7 @@ public class AddSubFolder extends RecyclerView.Adapter<AddSubFolder.PlanetViewHo
 
                     if (status.equals("1")) {
 
-                      //  studyNotesFoldersOnClick.FolderList();
+                       // studyNotesFoldersOnClick.FolderList();
 
                         JsonArray product=jobj.getAsJsonArray("data");
 
@@ -189,9 +194,16 @@ public class AddSubFolder extends RecyclerView.Adapter<AddSubFolder.PlanetViewHo
                         }
                         FancyToast.makeText(context, message, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
 
-                       // Intent intent = new Intent(context, HomePage.class);
-                       // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                      //  context.startActivity(intent);
+
+                        Bundle bundle =new Bundle();
+                        bundle.putString("id",id);
+                        bundle.putString("folder_name",name);
+                        StudyNotesFoldersOnClick fragment = new StudyNotesFoldersOnClick();
+                        fragment.setArguments(bundle);
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.contentContainer, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
 
                         pd.dismiss();
                     }

@@ -83,7 +83,7 @@ public class Setting  extends AppCompatActivity {
     RelativeLayout main2,nameedit,first,name;
     ImageButton edit,back1;
     Button savebutton,bck1, bck2, bck3, bck4, bck5, bck6, bck7,bck8,editpicture,white;
-
+    int[] image_array = new int[] { R.drawable.circle_black };
     Sharedpreference sharedpreference;
     private static int RESULT_LOAD_IMAGE = 1;
     private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 2;
@@ -476,7 +476,7 @@ public class Setting  extends AppCompatActivity {
                         globalClass.setSchool_name(res_school_name);
                         prefrence.savePrefrence();
                         if(globalClass.getProfil_pic().equals("")){
-                            Picasso.with(getApplicationContext()).load("http://i.imgur.com/DvpvklR.png").into(image1);
+                            Picasso.with(getApplicationContext()).load(image_array[0]).placeholder(R.drawable.circle_black).into(image1);
                         }
                         else {
                             Picasso.with(getApplicationContext()).load(globalClass.getProfil_pic()).into(image1);

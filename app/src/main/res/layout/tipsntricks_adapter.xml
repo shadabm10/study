@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/buttons2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+
+    <Button
+        android:id="@+id/minus"
+        android:background="@android:color/transparent"
+        android:drawableStart="@mipmap/minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        />
+    <Button
+        android:id="@+id/plus"
+        android:background="@android:color/transparent"
+        android:drawableStart="@mipmap/addround"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_toEndOf="@id/plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tips"
+            android:textStyle="bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+
+
+        <TextView
+            android:id="@+id/white"
+            android:layout_below="@id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:background="@drawable/allcurve_white"
+            android:text="@string/lorem"
+            android:visibility="gone"/>
+
+
+
+        <!--<TextView
+            android:id="@+id/textView2"
+            android:layout_below="@id/white"
+            android:drawableStart="@mipmap/addround"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="@string/tips"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/textView21"
+            android:visibility="invisible"
+            android:layout_below="@id/white"
+            android:drawableStart="@mipmap/minus"
+            android:drawablePadding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tips"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/white1"
+            android:layout_below="@id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:padding="10dp"
+            android:background="@drawable/allcurve_white"
+            android:text="@string/lorem"
+            android:visibility="visible"/>
+
+
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_below="@id/white1"
+            android:drawableStart="@mipmap/addround"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="@string/tips"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/textView31"
+            android:visibility="invisible"
+            android:layout_below="@id/white1"
+            android:drawableStart="@mipmap/minus"
+            android:drawablePadding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tips"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/white2"
+            android:layout_below="@id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/allcurve_white"
+            android:text="@string/lorem"
+            android:visibility="visible"/>
+
+
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_below="@id/white2"
+            android:drawableStart="@mipmap/addround"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:text="@string/tips"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/textView41"
+            android:visibility="invisible"
+            android:layout_below="@id/white2"
+            android:drawableStart="@mipmap/minus"
+            android:drawablePadding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tips"
+            android:textStyle="bold"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/white3"
+            android:layout_below="@id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/allcurve_white"
+            android:text="@string/lorem"
+            android:visibility="visible"/>-->
+
+
+
+
+    </RelativeLayout>
+

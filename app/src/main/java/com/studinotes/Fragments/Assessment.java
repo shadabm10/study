@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,29 +22,51 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 
+import java.util.ArrayList;
+import android.app.ProgressDialog;
+import android.widget.Toast;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.studinotes.Activities.Setting;
-import com.studinotes.Utils.Utils;
 import com.studinotes.AdapterClass.Assessment_adapter;
 import com.studinotes.AdapterClass.Assessment_adapter1;
 import com.studinotes.AdapterClass.R;
 import com.studinotes.AdapterClass.Sharedpreference;
+import com.studinotes.Constant.AppConfig;
+import com.studinotes.Utils.GlobalClass;
+import com.studinotes.Utils.Shared_Preference;
+import com.studinotes.Utils.Utils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Calendar;
 
 /**
- * Created by Belal on 2/3/2016.
+ * Created by SHadab on 2/3/2016.
  */
 
 //Our class extending fragment
 public class Assessment extends Fragment {
 
+    public static final String TAG = "MyFragment";
+
     Assessment_adapter adapter;
     Assessment_adapter1 adapter1;
     RecyclerView.LayoutManager mLayoutManager,mLayoutManager1 ;
-    ImageView edit1;
+    ProgressDialog pd;
+    GlobalClass globalClass;
+    ArrayList<HashMap<String,String>> assessment;
+    ArrayList<HashMap<String,String>> assessment1;
+    RecyclerView recyclerView,recyclerView1;
     RelativeLayout main_layout2;
     Sharedpreference sharedpreference;
+    Shared_Preference preference;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
 
@@ -52,70 +75,29 @@ public class Assessment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.assessment, container, false);
+        preference = new Shared_Preference(getActivity().getBaseContext());
+        preference.loadPrefrence();
+        pd = new ProgressDialog(getActivity());
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.setMessage("Loading");
+        recyclerView=rootView.findViewById(R.id.recycle);
+        globalClass = (GlobalClass)getActivity().getApplicationContext();
 
+        browseJob();
+        function();
+        recyclerView1=rootView.findViewById(R.id.recycle1);
+        function1();
         sharedpreference = new Sharedpreference(getActivity());
         main_layout2 = rootView.findViewById(R.id.main_layout2);
-
-        //Returning the layout file after inflating
-        //Change R.layout.studynotes in you classes
-
-        ArrayList<String> mData = new ArrayList<>();
-        mData.add("Examination Name");
-        mData.add("Examination Name");
-        mData.add("Examination Name");
-
-        ArrayList<String> mData1 = new ArrayList<>();
-        mData1.add("25/03/2019");
-        mData1.add("25/03/2019");
-        mData1.add("25/03/2019");
-
-        ArrayList<String> mData2 = new ArrayList<>();
-        mData2.add("12:00 p.m");
-        mData2.add("12:00 p.m");
-        mData2.add("12:00 p.m");
-
-
-
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycle);
-        mLayoutManager = new LinearLayoutManager(this.getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new Assessment_adapter(mData,mData1,mData2,getActivity());
-        recyclerView.setAdapter(adapter);
-
-
-        ArrayList<String> mData3 = new ArrayList<>();
-        mData3.add("Assessment Name");
-        mData3.add("Assessment Name");
-        mData3.add("Assessment Name");
-
-        ArrayList<String> mData4 = new ArrayList<>();
-        mData4.add("25/03/2019");
-        mData4.add("25/03/2019");
-        mData4.add("25/03/2019");
-
-        ArrayList<String> mData5 = new ArrayList<>();
-        mData5.add("12:00 p.m");
-        mData5.add("12:00 p.m");
-        mData5.add("12:00 p.m");
-
-        RecyclerView recyclerView1 = (RecyclerView) rootView.findViewById(R.id.recycle1);
-        mLayoutManager1 = new LinearLayoutManager(this.getActivity());
-        recyclerView1.setLayoutManager(mLayoutManager1);
-        adapter1 = new Assessment_adapter1(mData3,mData4,mData5,getActivity());
-        recyclerView1.setAdapter(adapter1);
 
         final ImageButton add = (ImageButton) rootView.findViewById(R.id.add);
         final ImageButton search = (ImageButton) rootView.findViewById(R.id.search);
         final LinearLayout searchfield = (LinearLayout) rootView.findViewById(R.id.searchfield);
         final ImageButton cross = (ImageButton) rootView.findViewById(R.id.cross);
-        final RecyclerView recycle = (RecyclerView) rootView.findViewById(R.id.recycle);
-        final RecyclerView recycle1 = (RecyclerView) rootView.findViewById(R.id.recycle1);
         final ImageButton add1 = (ImageButton) rootView.findViewById(R.id.add1);
         final Button exam = (Button) rootView.findViewById(R.id.exam);
         final Button assess = (Button) rootView.findViewById(R.id.assess);
         final ImageView edit1 = (ImageView) rootView.findViewById(R.id.edit1);
-       // final ImageView calender = (ImageView) rootView.findViewById(R.id.calendar);
-       // final EditText examdate = (EditText) rootView.findViewById(R.id.examdate);
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,32 +123,13 @@ public class Assessment extends Fragment {
                 }
 
         });
-        /*edit1.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-
-                dialogExamCreateDate();
-
-            }
-
-        });*/
-       /* add1.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-
-                dialogExamCreateDate();
-
-            }
-
-        });*/
         assess.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                recycle1.setVisibility(View.VISIBLE);
-                recycle.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
                 add.setVisibility(View.GONE);
                 add1.setVisibility(View.VISIBLE);
                 exam.setBackgroundResource(R.drawable.cancel_button);
@@ -181,8 +144,8 @@ public class Assessment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                recycle1.setVisibility(View.GONE);
-                recycle.setVisibility(View.VISIBLE);
+                recyclerView1.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 add.setVisibility(View.VISIBLE);
                 add1.setVisibility(View.GONE);
                 assess.setBackgroundResource(R.drawable.cancel_button);
@@ -221,6 +184,181 @@ public class Assessment extends Fragment {
 
 
         return rootView;
+    }
+
+    private void function() {
+        assessment = new ArrayList<>();
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+
+    }
+    private void function1() {
+        assessment1 = new ArrayList<>();
+        RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getContext());
+        recyclerView1.setLayoutManager(mLayoutManager1);
+
+    }
+
+
+    private void browseJob() {
+        // Tag used to cancel the request
+        String tag_string_req = "req_login";
+
+        pd.show();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_DEV+"listExamsAndAssessments", new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "JOB RESPONSE: " + response.toString());
+
+                pd.dismiss();
+                //  productlist.clear();
+
+                Gson gson = new Gson();
+
+                try {
+
+
+                    JsonObject jobj = gson.fromJson(response, JsonObject.class);
+                    String result = jobj.get("status").toString().replaceAll("\"", "");
+                    String message = jobj.get("message").toString().replaceAll("\"", "");
+
+
+                    if (result.equals("1")) {
+                        JsonArray product = jobj.getAsJsonArray("examData");
+
+
+                        for (int i = 0; i < product.size(); i++) {
+                            JsonObject images1 = product.get(i).getAsJsonObject();
+                            String id = images1.get("id").toString().replaceAll("\"", "");
+                            String user_id = images1.get("user_id").toString().replaceAll("\"", "");
+                            String exam_name = images1.get("exam_name").toString().replaceAll("\"", "");
+                            String exam_date = images1.get("exam_date").toString().replaceAll("\"", "").trim();
+                            String exam_time = images1.get("exam_time").toString().replaceAll("\"", "");
+                            String exam_subject = images1.get("exam_subject").toString().replaceAll("\"", "");
+                            String exam_details = images1.get("exam_details").toString().replaceAll("\"", "");
+                            String exam_notify = images1.get("exam_notify").toString().replaceAll("\"", "");
+                            String exam_notify_time = images1.get("exam_notify_time").toString().replaceAll("\"", "");
+                            String delete_flag = images1.get("delete_flag").toString().replaceAll("\"", "");
+                            String is_active = images1.get("is_active").toString().replaceAll("\"", "");
+                            String entry_date = images1.get("entry_date").toString().replaceAll("\"", "");
+                            String modified_date = images1.get("modified_date").toString().replaceAll("\"", "");
+
+                            // globalClass.setCat_id(id);
+                            HashMap<String, String> hashMap = new HashMap<>();
+                            hashMap.put("id", id);
+                            hashMap.put("user_id", user_id);
+                            hashMap.put("exam_name", exam_name);
+                            hashMap.put("exam_date", exam_date);
+                            hashMap.put("exam_time", exam_time);
+                            hashMap.put("exam_subject", exam_subject);
+                            hashMap.put("exam_details", exam_details);
+                            hashMap.put("exam_notify", exam_notify);
+                            hashMap.put("exam_notify_time", exam_notify_time);
+                            hashMap.put("delete_flag", delete_flag);
+                            hashMap.put("is_active", is_active);
+                            hashMap.put("entry_date", entry_date);
+                            hashMap.put("modified_date", modified_date);
+
+                            assessment.add(hashMap);
+                            Log.d(TAG, "Exam " + hashMap);
+
+                        }
+
+                        adapter = new Assessment_adapter(getContext(), assessment);
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+
+
+
+                        JsonArray product1=jobj.getAsJsonArray("assessmentData");
+                        for (int i = 0; i < product1.size(); i++) {
+                            JsonObject images1 = product1.get(i).getAsJsonObject();
+                            String id = images1.get("id").toString().replaceAll("\"", "");
+                            String user_id = images1.get("user_id").toString().replaceAll("\"", "");
+                            String ass_name = images1.get("ass_name").toString().replaceAll("\"", "");
+                            String ass_date = images1.get("ass_date").toString().replaceAll("\"", "").trim();
+                            String ass_time = images1.get("ass_time").toString().replaceAll("\"", "");
+                            String ass_subject = images1.get("ass_subject").toString().replaceAll("\"", "");
+                            String ass_details = images1.get("ass_details").toString().replaceAll("\"", "");
+                            String ass_notify = images1.get("ass_notify").toString().replaceAll("\"", "");
+                            String ass_notify_time = images1.get("ass_notify_time").toString().replaceAll("\"", "");
+                            String delete_flag = images1.get("delete_flag").toString().replaceAll("\"", "");
+                            String is_active = images1.get("is_active").toString().replaceAll("\"", "");
+                            String entry_date = images1.get("entry_date").toString().replaceAll("\"", "");
+                            String modified_date = images1.get("modified_date").toString().replaceAll("\"", "");
+
+                            // globalClass.setCat_id(id);
+                            HashMap<String, String> hashMap = new HashMap<>();
+                            hashMap.put("id",id);
+                            hashMap.put("user_id",user_id);
+                            hashMap.put("ass_name", ass_name);
+                            hashMap.put("ass_date", ass_date);
+                            hashMap.put("ass_time", ass_time);
+                            hashMap.put("ass_subject", ass_subject);
+                            hashMap.put("ass_details", ass_details);
+                            hashMap.put("ass_notify", ass_notify);
+                            hashMap.put("ass_notify_time", ass_notify_time);
+                            hashMap.put("delete_flag", delete_flag);
+                            hashMap.put("is_active", is_active);
+                            hashMap.put("entry_date", entry_date);
+                            hashMap.put("modified_date", modified_date);
+
+                            assessment1.add(hashMap);
+                            Log.d(TAG, "Asses " + hashMap);
+
+                        }
+
+                        adapter1 = new Assessment_adapter1(getContext(), assessment1);
+                        recyclerView1.setAdapter(adapter1);
+                        adapter1.notifyDataSetChanged();
+
+
+                    } else
+                        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+
+
+
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "issue", Toast.LENGTH_LONG).show();
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "DATA NOT FOUND: " + error.getMessage());
+                Toast.makeText(getContext(), "Exception", Toast.LENGTH_LONG).show();
+                pd.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+// Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+
+                params.put("userid",globalClass.getId());
+
+                Log.d(TAG, "getParams: "+params);
+                return params;
+            }
+
+
+
+
+
+        };
+
+        // Adding request to request queue
+        GlobalClass.getInstance().addToRequestQueue(strReq, tag_string_req);
+        strReq.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 10, 1.0f));
+
     }
 
 

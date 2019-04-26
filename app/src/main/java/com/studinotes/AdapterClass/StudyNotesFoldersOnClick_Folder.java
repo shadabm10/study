@@ -89,7 +89,7 @@ public class StudyNotesFoldersOnClick_Folder extends RecyclerView.Adapter<StudyN
                 String folder_name =  folderList.get(position).get("folder_name");
                 Bundle bundle =new Bundle();
                 bundle.putString("id",id);
-                bundle.putString("folder_name","folder_name");
+                bundle.putString("folder_name",folder_name);
                 StudyNotesFoldersOnClick fragment = new StudyNotesFoldersOnClick();
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

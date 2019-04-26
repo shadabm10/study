@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,30 +17,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.studinotes.Utils.GlobalClass;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+
+
 
 public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter1.PlanetViewHolder> {
-
-    private ArrayList<String> mData3;
-    private ArrayList<String> mData4;
-    private ArrayList<String> mData5;
+    String TAG="";
     private Context context;
+    ArrayList<HashMap<String,String>> assessment;
+    String text;
+    LayoutInflater inflater;
+    GlobalClass globalClass;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
-    // data is passed into the constructor
-    public Assessment_adapter1(ArrayList<String> data3, ArrayList<String> data4, ArrayList<String> data5, Context context) {
-        this.mData3 = data3;
-        this.mData4 = data4;
-        this.mData5 = data5;
+    public Assessment_adapter1(Context context, ArrayList<HashMap<String, String>> assessment) {
+
         this.context = context;
+        this.assessment = assessment;
+        globalClass = ((GlobalClass) context.getApplicationContext());
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     // inflates the row layout from xml when needed
     @Override
-    public Assessment_adapter1.PlanetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PlanetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.assessment_adapter1, parent, false);
-        Assessment_adapter1.PlanetViewHolder PlanetViewHolder = new Assessment_adapter1.PlanetViewHolder(v);
+        PlanetViewHolder PlanetViewHolder = new PlanetViewHolder(v);
         return PlanetViewHolder;
     }
 
@@ -47,36 +54,26 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
     @Override
     public void onBindViewHolder(PlanetViewHolder holder, int position) {
 
-        holder.text3.setText(mData3.get(position).toString());
-        holder.text4.setText(mData4.get(position).toString());
-        holder.text5.setText(mData5.get(position).toString());
+        holder.text3.setText(assessment.get(position).get("ass_name"));
+        holder.text4.setText(assessment.get(position).get("ass_date"));
+        holder.text5.setText(assessment.get(position).get("ass_time"));
+        Log.d(TAG, "NAME NEW: "+text);
 
         holder.edit1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(context, "Working", Toast.LENGTH_LONG).show();
-                dialogAccessCreateDate();
 
+                dialogAccessCreateDate();
             }
 
         });
 
-
-
-        /*String animal = mData.get(position);
-        holder.myTextView.setText(animal);
-
-        String animal1 = mData1.get(position);
-        holder.myTextView1.setText(animal1);
-
-        String animal2 = mData2.get(position);
-        holder.myTextView2.setText(animal2);*/
     }
 
     // total number of rows
     @Override
     public int getItemCount() {
-        return mData3.size();
+        return assessment.size();
     }
 
     public static class PlanetViewHolder extends RecyclerView.ViewHolder {
@@ -86,9 +83,9 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
 
         public PlanetViewHolder(View itemView) {
             super(itemView);
-            text3 = (TextView) itemView.findViewById(R.id.user1);
-            text4 = (TextView) itemView.findViewById(R.id.date1);
-            text5 = (TextView) itemView.findViewById(R.id.time1);
+            text3 = itemView.findViewById(R.id.user1);
+            text4 = itemView.findViewById(R.id.date1);
+            text5 = itemView.findViewById(R.id.time1);
             edit1 = itemView.findViewById(R.id.edit2);
 
         }
@@ -123,9 +120,7 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-
                 new DatePickerDialog(context, datePickerListener, mYear, mMonth, mDay).show();
-
 
             }
 
@@ -257,33 +252,4 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
         timePickerDialog.show();
     }
 
-
-
-
-
-
-
-
-
-
-    {
-
-
-        // stores and recycles views as they are scrolled off screen
-   /* public class PlanetViewHolder extends RecyclerView.PlanetViewHolder implements View.OnClickListener {
-
-        TextView myTextView, myTextView1, myTextView2;
-
-        PlanetViewHolder(View itemView) {
-            super(itemView);
-
-            myTextView = itemView.findViewById(R.id.user);
-            itemView.setOnClickListener(this);
-            myTextView1 = itemView.findViewById(R.id.date);
-            itemView.setOnClickListener(this);
-            myTextView2 = itemView.findViewById(R.id.time);
-            itemView.setOnClickListener(this);
-        }
-    }*/
-    }
 }

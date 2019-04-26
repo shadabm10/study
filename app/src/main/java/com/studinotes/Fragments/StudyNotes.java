@@ -105,12 +105,7 @@ public class StudyNotes extends Fragment  {
         productDetaiils=new ArrayList<>();
         newSeacrh=new ArrayList<>();
         FolderList();
-        ArrayList<String> planetList= new ArrayList<>();
-        planetList.add("Mustard");
-        planetList.add("Navy");
-        planetList.add("Black");
-        planetList.add("Dark Grey");
-        planetList.add("Terracotta");
+
 
 
 
@@ -267,17 +262,21 @@ public class StudyNotes extends Fragment  {
                             Toast.makeText(getActivity(),"please insert Name",Toast.LENGTH_LONG).show();
                         }
                         else {
+                            Log.d(TAG, "Color Code: " + colorCode);
+                            if (colorCode == null) {
+                                colorCode = "#FAE876";
+                            } else {
 
-
-                         //   ArrayList feed = new ArrayList<FeedItem>();
-                            FeedItem Feed = new FeedItem(NAME,colorCode);
-                            adapter = new StudyNotes_adapter(feedlist, getActivity(),pd);
-                            recyclerView.setAdapter(adapter);
-                            feedlist.add(Feed);
-                            dialog.dismiss();
-                            if(feedlist.size()>0) {
-                                FeedItem feedlast = feedlist.get(feedlist.size() - 1);
-                                Log.d(TAG, "onClick: "+feedlast.getColorCode());
+                                //   ArrayList feed = new ArrayList<FeedItem>();
+                                FeedItem Feed = new FeedItem(NAME, colorCode);
+                                adapter = new StudyNotes_adapter(feedlist, getActivity(), pd);
+                                recyclerView.setAdapter(adapter);
+                                feedlist.add(Feed);
+                                dialog.dismiss();
+                                if (feedlist.size() > 0) {
+                                    FeedItem feedlast = feedlist.get(feedlist.size() - 1);
+                                    Log.d(TAG, "onClick: " + feedlast.getColorCode());
+                                }
                             }
                         }
 
@@ -380,7 +379,7 @@ public class StudyNotes extends Fragment  {
 
 
                     } else
-                        FancyToast.makeText(getActivity(), "", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        FancyToast.makeText(getActivity(), message, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
 
 
 
@@ -490,7 +489,7 @@ public class StudyNotes extends Fragment  {
 
 
                     } else
-                        FancyToast.makeText(getActivity(), message, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                        FancyToast.makeText(getActivity(), message, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).cancel();
 
 
 

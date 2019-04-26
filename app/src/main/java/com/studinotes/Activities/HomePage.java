@@ -1,24 +1,19 @@
 package com.studinotes.Activities;
 
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.os.Handler;
+
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
 
-import com.shashank.sony.fancytoastlib.FancyToast;
-import com.studinotes.AdapterClass.Homepage_Pager;
+
+
 import com.studinotes.AdapterClass.R;
 import com.studinotes.Fragments.Assessment;
 import com.studinotes.Fragments.StudyNotes;
@@ -41,14 +36,7 @@ public class HomePage extends AppCompatActivity {
         loadFragment(new StudyNotes());
 
         global_class = (GlobalClass)getApplicationContext();
-       // global_class.setCurrency_Symbol("₹");
 
-
-       // Mint.initAndStartSession(this.getApplication(), "0ae6c687");
-
-
-      //  DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        //databaseHelper.deleteAll();
 
         fragment = new StudyNotes();
 
@@ -186,15 +174,9 @@ public class HomePage extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        try {
-            if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
-                finish();// finish activity if you are at home screen
-                return;
-            } else {
-                getSupportFragmentManager().popBackStack();//will pop previous fragment
-            }
-        } catch (Exception e) {
+        if (getFragmentManager().getBackStackEntryCount() != 0) {
+            getFragmentManager().popBackStack();
+        } else {
             super.onBackPressed();
         }
-    }
-}
+    }}

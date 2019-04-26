@@ -224,72 +224,121 @@
         android:orientation="horizontal"
         android:padding="10dp"
         android:visibility="visible">
+        <RelativeLayout
+            android:id="@+id/rl_biscuit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
+
+            <Button
+                android:id="@+id/biscuit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                android:background="@drawable/circle_fill"
+                />
 
 
-        <Button
-            android:id="@+id/biscuit"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/biscuit"
-            />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
         <Button
             android:id="@+id/white"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/white"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:background="@drawable/white_border_circle"
             />
 
-
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
         <Button
             android:id="@+id/skyblue"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/skyblue"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/skyblue_circle_border"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
 
         <Button
             android:id="@+id/pesto"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/pesto"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/pesto_circle_border"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
 
         <Button
             android:id="@+id/fave"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/fave"/>
-
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/fave_circle_border"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
         <Button
             android:id="@+id/calmgreen"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/calmgreen"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/calmgreen_circle"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
 
         <Button
             android:id="@+id/lightgrey"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/lightgrey"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/light_grey_circle_border"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
 
         <Button
             android:id="@+id/pink"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/pink"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/pink_cicle_border"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginRight="3dp">
 
         <Button
             android:id="@+id/lightblue"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/lightblue"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/lightblue_border_circle" />
+        </RelativeLayout>
 
 
     </LinearLayout>

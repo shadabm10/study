@@ -120,6 +120,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
     LinearLayout searchfield;
     TextView textFile,textView;
     File imageFile;
+
     Context context;
     String extension_withdot;
     EditText search_folder_file;
@@ -181,9 +182,9 @@ public class StudyNotesFoldersOnClick extends Fragment {
         }
         // id = getArguments().getString("id");
       //  foldername = getArguments().getString("folder_name");
-        globalClass.setFolderid(id);
-        globalClass.setFolderanme(foldername);
-        Log.d(TAG, "id: "+id);
+       // globalClass.setFolderid(id);
+      //  globalClass.setFolderanme(foldername);
+        Log.d(TAG, "id: "+foldername);
         textView.setText(foldername);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(),
@@ -203,12 +204,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
 
         }
         FolderList();
-        ArrayList<String> planetList= new ArrayList<>();
-        planetList.add("Mustard");
-        planetList.add("Navy");
-        planetList.add("Black");
-        planetList.add("Dark Grey");
-        planetList.add("Terracotta");
+
 
 
 
@@ -395,18 +391,21 @@ public class StudyNotesFoldersOnClick extends Fragment {
                                     Toast.makeText(getActivity(),"please insert Name",Toast.LENGTH_LONG).show();
                                 }
                                 else {
-
-
-                                    //   ArrayList feed = new ArrayList<FeedItem>();
-                                    FeedItem Feed = new FeedItem(NAME,colorCode);
-                                    studyNotes_adapter = new AddSubFolder(feedlist, getActivity(),pd,globalClass.getFolderid());
-                                    rv_main.setAdapter(studyNotes_adapter);
-                                    feedlist.add(Feed);
-                                    studyNotes_adapter.notifyDataSetChanged();
-                                    dialog.dismiss();
-                                    if(feedlist.size()>0) {
-                                        FeedItem feedlast = feedlist.get(feedlist.size() - 1);
-                                        Log.d(TAG, "onClick: "+feedlast.getColorCode());
+                                    //  feedlist.clear();
+                                    if (colorCode == null) {
+                                        colorCode = "#FAE876";
+                                    } else {
+                                        //   ArrayList feed = new ArrayList<FeedItem>();
+                                        FeedItem Feed = new FeedItem(NAME,colorCode);
+                                        studyNotes_adapter = new AddSubFolder(feedlist, getActivity(), pd, id,fragmentManager);
+                                        rv_main.setAdapter(studyNotes_adapter);
+                                        feedlist.add(Feed);
+                                        studyNotes_adapter.notifyDataSetChanged();
+                                        dialog.dismiss();
+                                        if (feedlist.size() > 0) {
+                                            FeedItem feedlast = feedlist.get(feedlist.size() - 1);
+                                            Log.d(TAG, "onClick: " + feedlast.getColorCode());
+                                        }
                                     }
                                 }
 
@@ -456,8 +455,9 @@ public class StudyNotesFoldersOnClick extends Fragment {
         back4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HomePage.class);
-                startActivity(intent);
+                if (getFragmentManager().getBackStackEntryCount() != 0) {
+                    getFragmentManager().popBackStack();
+                }
             }
         });
 
@@ -706,7 +706,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
         RequestParams params = new RequestParams();
 
         params.put("userid", globalClass.getId());
-        params.put("folder_id", globalClass.getFolderid());
+        params.put("folder_id", id);
         params.put("file_type", file_type);
         params.put("file_name", reason+extension_withdot);
 
@@ -905,7 +905,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
                 Map<String, String> params = new HashMap<>();
 
                 params.put("userid",globalClass.getId());
-                params.put("folder_id",globalClass.getFolderid());
+                params.put("folder_id",id);
                 params.put("search_name",search);
 
                 Log.d(TAG, "Show Folder: "+params);
@@ -1043,7 +1043,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
                 Map<String, String> params = new HashMap<>();
 
                 params.put("userid",globalClass.getId());
-                params.put("folder_id",globalClass.getFolderid());
+                params.put("folder_id",id);
 
                 Log.d(TAG, "Show Folder: "+params);
                 return params;

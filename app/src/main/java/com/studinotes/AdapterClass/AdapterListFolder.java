@@ -40,7 +40,7 @@ public class AdapterListFolder extends RecyclerView.Adapter<AdapterListFolder.My
     ) {
         this.context = c;
         this.list_claim = list_claim;
-        this.image = image;
+
         this.fragmentManager=manager_;
 
 
