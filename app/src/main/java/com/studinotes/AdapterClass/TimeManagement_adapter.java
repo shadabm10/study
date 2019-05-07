@@ -18,26 +18,20 @@ import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class TimeManagement_adapter extends RecyclerView.Adapter<TimeManagement_adapter.PlanetViewHolder> {
 
-    ArrayList<String> mData;
-    ArrayList<String> mData1;
-    ArrayList<String> mData2;
-    ArrayList<String> mData3;
-    ArrayList<String> mData4;
+
     Context context;
     private int mYear, mMonth, mDay, mHour, mMinute;
-
+    ArrayList<HashMap<String,String>> tipsntricks;
 
     // data is passed into the constructor
-    public TimeManagement_adapter(ArrayList<String> data, ArrayList<String> data1, ArrayList<String> data2, ArrayList<String> data3, ArrayList<String> data4, Context context) {
-        this.mData = data;
-        this.mData1 = data1;
-        this.mData2 = data2;
-        this.mData3 = data3;
-        this.mData4 = data4;
+    public TimeManagement_adapter( Context context,ArrayList<HashMap<String, String>> tipsntricks) {
+
         this.context = context;
+        this.tipsntricks=tipsntricks;
 
     }
 
@@ -53,11 +47,31 @@ public class TimeManagement_adapter extends RecyclerView.Adapter<TimeManagement_
     @Override
     public void onBindViewHolder(PlanetViewHolder holder, int position) {
 
-        holder.text.setText(mData.get(position).toString());
-        holder.text1.setText(mData1.get(position).toString());
-        holder.text2.setText(mData2.get(position).toString());
-        holder.text3.setText(mData3.get(position).toString());
-        holder.text4.setText(mData4.get(position).toString());
+
+        String social=tipsntricks.get(position).get("social");
+        String random=tipsntricks.get(position).get("random");
+
+        if(social.equals("Y")){
+            holder.end_time.setText("Yes");
+
+        }else {
+            holder.end_time.setText("No");
+
+        }
+        if (random.equals("Y")){
+            holder.social.setText("Random");
+        }
+        else {
+            holder.social.setText("Important");
+        }
+        holder.day.setText(tipsntricks.get(position).get("fullname"));
+
+        holder.date_day.setText(tipsntricks.get(position).get("day"));
+        holder.subject.setText(tipsntricks.get(position).get("subject_name"));
+        holder.start_time.setText(tipsntricks.get(position).get("start_time")+" "+"to");
+        holder.end_time_new.setText(tipsntricks.get(position).get("end_time"));
+
+
         holder.edit3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,22 +109,24 @@ public class TimeManagement_adapter extends RecyclerView.Adapter<TimeManagement_
     // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        return tipsntricks.size();
     }
 
     public static class PlanetViewHolder extends RecyclerView.ViewHolder {
 
-         TextView text,text1,text2,text3,text4,text5;
+         TextView day,subject,start_time,end_time,social,date_day,end_time_new;
          ImageView edit3;
 
         public PlanetViewHolder(View itemView) {
             super(itemView);
-            text= (TextView) itemView.findViewById(R.id.day);
-            text1= (TextView) itemView.findViewById(R.id.subject);
-            text2= (TextView) itemView.findViewById(R.id.str);
-            text3= (TextView) itemView.findViewById(R.id.end1);
-            text4= (TextView) itemView.findViewById(R.id.bell);
-            edit3= itemView.findViewById(R.id.edit3);
+            day= itemView.findViewById(R.id.days);
+            subject= itemView.findViewById(R.id.tv_subject);
+            start_time= itemView.findViewById(R.id.tv_time);
+            end_time= itemView.findViewById(R.id.tv_social);
+            social= itemView.findViewById(R.id.tv_random);
+            edit3= itemView.findViewById(R.id.tv_edit);
+            date_day= itemView.findViewById(R.id.date);
+            end_time_new= itemView.findViewById(R.id.tv_time_to);
         }
     }
 

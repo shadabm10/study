@@ -78,6 +78,7 @@ public class Setting  extends AppCompatActivity {
     TextView edt_firsr,edt_mail,edt_school,last;
     EditText edt_name,edt_school1,edt_email,edt_last;
     ProgressDialog pd;
+    RelativeLayout rl_biscuit,rl_white,rl_sky_blue,rl_pesto,rl_fave,rl_calm,rl_grey,rl_pink,rl_light_blue;
     TextView logout;
     CircularImageView image1;
     RelativeLayout main2,nameedit,first,name;
@@ -102,6 +103,15 @@ public class Setting  extends AppCompatActivity {
         editpicture = findViewById(R.id.editpicture);
         nameedit = findViewById(R.id.nameedit);
         name = findViewById(R.id.name);
+        rl_biscuit = findViewById(R.id.rl_biscuit);
+        rl_calm = findViewById(R.id.rl_calm);
+        rl_fave = findViewById(R.id.rl_fave);
+        rl_grey = findViewById(R.id.rl_grey);
+        rl_light_blue = findViewById(R.id.rl_light_blue);
+        rl_pesto = findViewById(R.id.rl_pesto);
+        rl_pink = findViewById(R.id.rl_pink);
+        rl_sky_blue = findViewById(R.id.rl_sky_blue);
+        rl_white = findViewById(R.id.rl_white);
         savebutton = findViewById(R.id.savebutton);
         edit = findViewById(R.id.edit);
         back1= findViewById(R.id.back1);
@@ -204,10 +214,8 @@ public class Setting  extends AppCompatActivity {
         bck1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // main2.setBackgroundResource(R.color.biscuit);
-                //first.setBackgroundResource(R.color.green);
+
                 Utils.changeToTheme(Setting.this, Utils.THEME_DEFAULT);
-               // Utils.changeToTheme(this, new Sharedpreference(this).retrieveInt("theme", THEME_WHITE));
 
                 sharedpreference.saveStyle(Utils.THEME_DEFAULT);
             }
@@ -215,10 +223,8 @@ public class Setting  extends AppCompatActivity {
         white.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // main2.setBackgroundResource(R.color.biscuit);
-                //first.setBackgroundResource(R.color.green);
+
                 Utils.changeToTheme(Setting.this, Utils.THEME_EIGHT);
-                // Utils.changeToTheme(this, new Sharedpreference(this).retrieveInt("theme", THEME_WHITE));
 
                 sharedpreference.saveStyle(Utils.THEME_EIGHT);
             }
@@ -228,10 +234,10 @@ public class Setting  extends AppCompatActivity {
         bck2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // main2.setBackgroundResource(R.color.skyblue);
-               // second.setBackgroundResource(R.color.green);
+
                 Utils.changeToTheme(Setting.this, Utils.THEME_ONE);
                 sharedpreference.saveStyle(Utils.THEME_ONE);
+                rl_sky_blue.setBackgroundColor(Color.parseColor("#307417"));
             }
         });
 
@@ -240,7 +246,7 @@ public class Setting  extends AppCompatActivity {
         bck3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // main2.setBackgroundResource(R.color.pesto);
+
                 Utils.changeToTheme(Setting.this, Utils.THEME_TWO);
                 sharedpreference.saveStyle(Utils.THEME_TWO);
             }
@@ -250,7 +256,6 @@ public class Setting  extends AppCompatActivity {
         bck4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // main2.setBackgroundResource(R.color.fave);
                 Utils.changeToTheme(Setting.this, Utils.THEME_THREE);
                 sharedpreference.saveStyle(Utils.THEME_THREE);
             }
@@ -260,7 +265,6 @@ public class Setting  extends AppCompatActivity {
         bck5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // main2.setBackgroundResource(R.color.fave);
                 Utils.changeToTheme(Setting.this, Utils.THEME_FOUR);
                 sharedpreference.saveStyle(Utils.THEME_FOUR);
             }
@@ -292,6 +296,7 @@ public class Setting  extends AppCompatActivity {
 
 
     }
+
 
     private void Logout() {
         // Tag used to cancel the request

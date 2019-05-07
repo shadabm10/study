@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tips"
             android:textStyle="bold"
+
             android:paddingTop="10dp"
             android:paddingBottom="15dp"
             android:textAppearance="?android:attr/textAppearanceLarge"/>

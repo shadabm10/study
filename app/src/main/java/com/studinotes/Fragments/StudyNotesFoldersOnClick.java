@@ -180,11 +180,13 @@ public class StudyNotesFoldersOnClick extends Fragment {
             id = arguments.get("id").toString();
             foldername = arguments.get("folder_name").toString();
         }
+        FolderList();
         // id = getArguments().getString("id");
       //  foldername = getArguments().getString("folder_name");
        // globalClass.setFolderid(id);
       //  globalClass.setFolderanme(foldername);
-        Log.d(TAG, "id: "+foldername);
+        Log.d(TAG, "id: "+id);
+        Log.d(TAG, "foldername: "+foldername);
         textView.setText(foldername);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(),
@@ -203,7 +205,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
             }
 
         }
-        FolderList();
+
 
 
 
@@ -229,7 +231,15 @@ public class StudyNotesFoldersOnClick extends Fragment {
                 if(globalClass.isNetworkAvailable()){
 
 
+                    String string = charSequence.toString();
+                    if(string.equals("")){
+                        FolderList();
+                    }
+                    else {
+
+
                         FolderListSearch(search_folder_file.getText().toString());
+                    }
 
 
                 }else{
@@ -239,7 +249,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                FolderList();
+              //  FolderList();
 
             }
         });
@@ -302,7 +312,8 @@ public class StudyNotesFoldersOnClick extends Fragment {
                         final Dialog dialog = new Dialog(getActivity());
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.studynotes_dialog);
-                        final Button yes,no,mustard,navy,black,darkgrey,terracotta;
+                        final Button yes,no,mustard,navy,black,darkgrey,terracotta,light_blue,dark_green,
+                                light_green,orange,purple,red;
 
                         final Button mainbutton;
                         final EditText name;
@@ -316,6 +327,12 @@ public class StudyNotesFoldersOnClick extends Fragment {
                         black = dialog. findViewById(R.id.blackbutton);
                         darkgrey = dialog. findViewById(R.id.darkgreybutton);
                         terracotta = dialog. findViewById(R.id.terracottabutton);
+                        light_blue = dialog. findViewById(R.id.blue_new);
+                        dark_green = dialog. findViewById(R.id.deepGreen);
+                        light_green = dialog. findViewById(R.id.lightGreen);
+                        orange = dialog. findViewById(R.id.orange);
+                        purple = dialog. findViewById(R.id.purple);
+                        red = dialog. findViewById(R.id.red);
                         mainbutton =  dialog.findViewById(R.id.mainbutton);
                         yes.setOnClickListener(this);
                         no.setOnClickListener(this);
@@ -378,6 +395,61 @@ public class StudyNotesFoldersOnClick extends Fragment {
                                 // Log.d(TAG, "colorCode: "+ colorCode);
                             }
                         });
+                        light_blue.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                mainbutton.setBackgroundResource(R.color.blue_change);
+                                colorCode ="#0082f2";
+                                // Log.d(TAG, "colorCode: "+ colorCode);
+                            }
+                        });
+                        dark_green.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                mainbutton.setBackgroundResource(R.color.deep_green);
+                                colorCode ="#008100";
+                                // Log.d(TAG, "colorCode: "+ colorCode);
+                            }
+                        });
+                        light_green.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                mainbutton.setBackgroundResource(R.color.light_green);
+                                colorCode ="#00f600";
+                                // Log.d(TAG, "colorCode: "+ colorCode);
+                            }
+                        });
+                        orange.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                mainbutton.setBackgroundResource(R.color.orange);
+                                colorCode ="#ff7c00";
+                                // Log.d(TAG, "colorCode: "+ colorCode);
+                            }
+                        });
+                        purple.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                mainbutton.setBackgroundResource(R.color.purple);
+                                colorCode ="#ff00e6";
+                                // Log.d(TAG, "colorCode: "+ colorCode);
+                            }
+                        });
+                        red.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                mainbutton.setBackgroundResource(R.color.red);
+                                colorCode ="#ff0000";
+                                // Log.d(TAG, "colorCode: "+ colorCode);
+                            }
+                        });
+
 
                         yes.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -750,7 +822,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
 
                          //   FancyToast.makeText(getActivity(), message, FancyToast.LENGTH_LONG,
                               //      FancyToast.SUCCESS, false).show();
-                            FolderList();
+                          //  FolderList();
 
 
 
@@ -796,7 +868,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
         pd.show();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_DEV+"folderAndFileList", new Response.Listener<String>() {
+                AppConfig.URL_DEV+"searchFolderAndFiles", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -805,6 +877,8 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
                 pd.dismiss();
                 foldersearch.clear();
                 foldersearchList.clear();
+                folderList.clear();
+                fileDataList.clear();
                 rv_main.removeAllViews();
 
 
@@ -845,11 +919,12 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
                             hashMap.put("is_active", is_active);
                             hashMap.put("entry_date", entry_date);
                             hashMap.put("modified_date", modified_date);
+                            hashMap.put("type","folder");
 
                             foldersearchList.add(hashMap);
                             Log.d(TAG, "Folder Data " + hashMap);
 
-                            adapter = new StudyNotesFoldersOnClick_Folder(foldersearchList,getActivity(),fragmentManager);
+                            adapter = new StudyNotesFoldersOnClick_Folder(foldersearchList,getActivity(),fragmentManager,pd,StudyNotesFoldersOnClick.this);
                             rv_main.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
 
@@ -983,11 +1058,12 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
                             hashMap.put("is_active", is_active);
                             hashMap.put("entry_date", entry_date);
                             hashMap.put("modified_date", modified_date);
+                            hashMap.put("type", "folder");
 
                             folderList.add(hashMap);
                            Log.d(TAG, "Folder Data " + hashMap);
 
-                            adapter = new StudyNotesFoldersOnClick_Folder(folderList,getActivity(),fragmentManager);
+                            adapter = new StudyNotesFoldersOnClick_Folder(folderList,getActivity(),fragmentManager,pd,StudyNotesFoldersOnClick.this);
                             rv_main.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
 
@@ -1095,8 +1171,11 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
                 hashMap.put("entry_date", entry_date);
                 hashMap.put("modified_date", modified_date);
                 hashMap.put("file_url", file_url);
+                hashMap.put("type", "file");
+
 
                 list.add(hashMap);
+                Log.d(TAG, "getListFromJson: "+list);
 
 
             }
@@ -1160,7 +1239,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
         Log.d(TAG, "list = " + getListFromJson(hashMap.get("file")));
         Log.d(TAG, "list size = " + getListFromJson(hashMap.get("file")).size());
 
-        adapterWord = new AdapterWord(getListFromJson(hashMap.get("file")),getActivity());
+        adapterWord = new AdapterWord(getListFromJson(hashMap.get("file")),getActivity(),pd,fragmentManager,StudyNotesFoldersOnClick.this);
         dynamic_recycler.setAdapter(adapterWord);
         adapterWord.notifyDataSetChanged();
 

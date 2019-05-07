@@ -22,4 +22,12 @@
     <color name="lightgrey">#AEA7A6</color>
     <color name="pink">#EDDFE0</color>
     <color name="lightblue">#C2F7FE</color>
+    <color name="blue_change">#0082f2</color>
+    <color name="deep_green">#008100</color>
+    <color name="light_green">#00f600</color>
+    <color name="orange">#ff7c00</color>
+    <color name="purple">#ff00e6</color>
+    <color name="red">#ff0000</color>
+
+
 </resources>

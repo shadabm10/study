@@ -215,140 +215,158 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         android:text="@string/change"/>
-
-    <LinearLayout
-        android:id="@+id/colors"
+    <HorizontalScrollView
         android:layout_below="@id/change"
+        android:id="@+id/sc_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:visibility="visible">
-        <RelativeLayout
-            android:id="@+id/rl_biscuit"
-            android:layout_width="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:id="@+id/colors"
+
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="visible">
+            <RelativeLayout
+                android:id="@+id/rl_biscuit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
 
-            <Button
-                android:id="@+id/biscuit"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                <Button
+                    android:id="@+id/biscuit"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
 
-                android:background="@drawable/circle_fill"
-                />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-        <Button
-            android:id="@+id/white"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-
-            android:background="@drawable/white_border_circle"
-            />
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-        <Button
-            android:id="@+id/skyblue"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/skyblue_circle_border"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-
-        <Button
-            android:id="@+id/pesto"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/pesto_circle_border"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-
-        <Button
-            android:id="@+id/fave"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/fave_circle_border"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-        <Button
-            android:id="@+id/calmgreen"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/calmgreen_circle"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-
-        <Button
-            android:id="@+id/lightgrey"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/light_grey_circle_border"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-
-        <Button
-            android:id="@+id/pink"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/pink_cicle_border"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginRight="3dp">
-
-        <Button
-            android:id="@+id/lightblue"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/lightblue_border_circle" />
-        </RelativeLayout>
+                    android:background="@drawable/circle_fill"
+                    />
 
 
-    </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+                <Button
+                    android:id="@+id/white"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+
+                    android:background="@drawable/white_border_circle"
+                    />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_sky_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+                <Button
+                    android:id="@+id/skyblue"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/skyblue_circle_border"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_pesto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+
+                <Button
+                    android:id="@+id/pesto"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/pesto_circle_border"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_fave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+
+                <Button
+                    android:id="@+id/fave"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/fave_circle_border"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_calm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+                <Button
+                    android:id="@+id/calmgreen"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/calmgreen_circle"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+
+                <Button
+                    android:id="@+id/lightgrey"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/light_grey_circle_border" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_pink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+
+                <Button
+                    android:id="@+id/pink"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/pink_cicle_border"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_light_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_marginRight="3dp">
+
+                <Button
+                    android:id="@+id/lightblue"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/lightblue_border_circle" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+
+
+    </HorizontalScrollView>
+
 
     <View
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@android:color/darker_gray"
-        android:layout_below="@+id/colors"/>
+        android:layout_below="@+id/sc_main"/>
 
     <TextView
         android:id="@+id/logout"

@@ -9,7 +9,7 @@
     android:padding="20dp">
 
     <EditText
-        android:id="@+id/examname"
+        android:id="@+id/asses_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -21,7 +21,7 @@
         />
 
     <EditText
-        android:id="@+id/subjectname"
+        android:id="@+id/asses_subject_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -45,6 +45,7 @@
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/black"
             android:editable="false"
+            android:layout_marginRight="40dp"
             android:textSize="15dp"
             />
 
@@ -70,6 +71,7 @@
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/black"
             android:editable="false"
+            android:layout_marginRight="40dp"
             android:textSize="15dp"
             />
         <ImageButton
@@ -88,26 +90,30 @@
 
         <EditText
             android:id="@+id/notify5"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:paddingBottom="18dp"
-            android:text="@string/notifyme"
+            android:hint="@string/notifyme"
             android:editable="false"
             android:textColor="@android:color/black"
             android:textSize="15sp"/>
+
         <EditText
             android:id="@+id/notify6"
-            android:layout_toRightOf="@id/notify5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:layout_gravity="center"
-            android:paddingBottom="18dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_toEndOf="@+id/notify5"
+            android:layout_toRightOf="@id/notify5"
+            android:background="@android:color/transparent"
             android:editable="false"
+            android:paddingBottom="18dp"
             android:textColor="@android:color/black"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/bell3"
@@ -131,7 +137,7 @@
         android:textSize="15dp"
         />
     <EditText
-        android:id="@+id/examdetails"
+        android:id="@+id/access_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="80dp"

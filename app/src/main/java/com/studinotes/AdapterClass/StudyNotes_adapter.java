@@ -123,6 +123,43 @@ public class StudyNotes_adapter extends RecyclerView.Adapter<StudyNotes_adapter.
             AddFolder( name,colorCode);
         }
 
+       else if(colorCode.equals("#0082f2")){
+            // holder.image.setImageResource(R.mipmap.folderterracotta);
+            holder.image.setColorFilter(ContextCompat.getColor(context,
+                    R.color.blue_change));
+            AddFolder( name,colorCode);
+        }
+       else if(colorCode.equals("#008100")){
+            // holder.image.setImageResource(R.mipmap.folderterracotta);
+            holder.image.setColorFilter(ContextCompat.getColor(context,
+                    R.color.deep_green));
+            AddFolder( name,colorCode);
+        }
+       else if(colorCode.equals("#00f600")){
+            // holder.image.setImageResource(R.mipmap.folderterracotta);
+            holder.image.setColorFilter(ContextCompat.getColor(context,
+                    R.color.light_green));
+            AddFolder( name,colorCode);
+        }
+       else if(colorCode.equals("#ff7c00")){
+            // holder.image.setImageResource(R.mipmap.folderterracotta);
+            holder.image.setColorFilter(ContextCompat.getColor(context,
+                    R.color.orange));
+            AddFolder( name,colorCode);
+        }
+       else if(colorCode.equals("#ff00e6")){
+            // holder.image.setImageResource(R.mipmap.folderterracotta);
+            holder.image.setColorFilter(ContextCompat.getColor(context,
+                    R.color.purple));
+            AddFolder( name,colorCode);
+        }
+       else if(colorCode.equals("#ff0000")){
+            // holder.image.setImageResource(R.mipmap.folderterracotta);
+            holder.image.setColorFilter(ContextCompat.getColor(context,
+                    R.color.red));
+            AddFolder( name,colorCode);
+        }
+
 
 
 

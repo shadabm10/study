@@ -50,6 +50,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:gravity="start"
+        android:padding="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_below="@id/textView1"
         android:background="@drawable/editboxblack"
         android:minHeight="150dp"
@@ -57,6 +60,7 @@
 
 
         <ImageButton
+            android:id="@+id/send_suggestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/review"

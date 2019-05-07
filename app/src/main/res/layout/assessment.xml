@@ -167,7 +167,7 @@
                 android:background="@android:color/transparent"
                 android:layout_weight="1"
                 android:src="@mipmap/add"
-                android:visibility="invisible"
+                android:visibility="gone"
                 />
 
 

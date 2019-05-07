@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.studinotes.Utils.GlobalClass;
 
@@ -24,6 +25,8 @@ public class TipsnTricks_adapter extends RecyclerView.Adapter<TipsnTricks_adapte
     String text;
     LayoutInflater inflater;
     GlobalClass globalClass;
+    int row_index=-1;
+     int row_index1;
 
 
     public TipsnTricks_adapter(Context context, ArrayList<HashMap<String, String>> tipsntricks) {
@@ -31,7 +34,7 @@ public class TipsnTricks_adapter extends RecyclerView.Adapter<TipsnTricks_adapte
         this.context = context;
         this.tipsntricks = tipsntricks;
 
-        globalClass = ((GlobalClass) context.getApplicationContext());
+       globalClass = ((GlobalClass) context.getApplicationContext());
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -44,11 +47,37 @@ public class TipsnTricks_adapter extends RecyclerView.Adapter<TipsnTricks_adapte
     }
 
     @Override
-    public void onBindViewHolder(PlanetViewHolder holder, int position) {
+    public void onBindViewHolder(final PlanetViewHolder holder, int position) {
 
         holder.name.setText(tipsntricks.get(position).get("content"));
         holder.title.setText(tipsntricks.get(position).get("title"));
         Log.d(TAG, "NAME NEW: "+text);
+        /*holder.plus.setOnClickListener(v -> {
+
+
+
+            holder.name.setVisibility(View.VISIBLE);
+           holder. plus.setVisibility(View.INVISIBLE);
+        });
+        holder.minus.setOnClickListener(v -> {
+            holder.name.setVisibility(View.GONE);
+            holder.plus.setVisibility(View.VISIBLE);
+        });*/
+        holder.plus.setOnClickListener(view -> {
+             row_index = position;
+            notifyDataSetChanged();
+        });
+
+        if(row_index==position){
+            holder.name.setVisibility(View.VISIBLE);
+            holder.plus.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            holder.name.setVisibility(View.GONE);
+            holder.plus.setVisibility(View.VISIBLE);
+        }
+
 
     }
 
@@ -68,134 +97,22 @@ public class TipsnTricks_adapter extends RecyclerView.Adapter<TipsnTricks_adapte
             title = itemView.findViewById(R.id.textView);
             minus = itemView.findViewById(R.id.minus);
             plus = itemView.findViewById(R.id.plus);
-           /* text1= (TextView) itemView.findViewById(R.id.white1);
-            text2= (TextView) itemView.findViewById(R.id.white2);
-            text3= (TextView) itemView.findViewById(R.id.white3);
-            final TextView add1 = (TextView) itemView.findViewById(R.id.textView1);
-            final TextView add11 = (TextView) itemView.findViewById(R.id.textView11);
-            final TextView add2 = (TextView) itemView.findViewById(R.id.textView2);
-            final TextView add21 = (TextView) itemView.findViewById(R.id.textView21);
-            final TextView add3 = (TextView) itemView.findViewById(R.id.textView3);
-            final TextView add31 = (TextView) itemView.findViewById(R.id.textView31);
-            final TextView add4 = (TextView) itemView.findViewById(R.id.textView4);
-            final TextView add41 = (TextView) itemView.findViewById(R.id.textView41);*/
 
 
 
-            plus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    name.setVisibility(View.VISIBLE);
-                    plus.setVisibility(View.INVISIBLE);
-                   /* add1.setVisibility(View.INVISIBLE);
-                    add21.setVisibility(View.INVISIBLE);
-                    add31.setVisibility(View.INVISIBLE);
-                    add41.setVisibility(View.INVISIBLE);
-                    add2.setVisibility(View.VISIBLE);
-                    add3.setVisibility(View.VISIBLE);
-                    add4.setVisibility(View.VISIBLE);
-                    text1.setVisibility(View.GONE);
-                    text2.setVisibility(View.GONE);
-                    text3.setVisibility(View.GONE);*/
 
 
-                }
-            });
-            minus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    name.setVisibility(View.GONE);
-                    plus.setVisibility(View.VISIBLE);
-                    //add1.setVisibility(View.VISIBLE);
 
-                }
+
+            minus.setOnClickListener(v -> {
+                name.setVisibility(View.GONE);
+                plus.setVisibility(View.VISIBLE);
+              
+
             });
 
-           /* add2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    text1.setVisibility(View.VISIBLE);
-                    add21.setVisibility(View.VISIBLE);
-                    add2.setVisibility(View.INVISIBLE);
-                    add11.setVisibility(View.INVISIBLE);
-                    add31.setVisibility(View.INVISIBLE);
-                    add41.setVisibility(View.INVISIBLE);
-                    add1.setVisibility(View.VISIBLE);
-                    add3.setVisibility(View.VISIBLE);
-                    add4.setVisibility(View.VISIBLE);
-                    text.setVisibility(View.GONE);
-                    text2.setVisibility(View.GONE);
-                    text3.setVisibility(View.GONE);
 
 
-                }
-            });
-
-            add21.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    text1.setVisibility(View.GONE);
-                    add21.setVisibility(View.INVISIBLE);
-                    add2.setVisibility(View.VISIBLE);
-
-                }
-            });
-            add3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    text2.setVisibility(View.VISIBLE);
-                    add31.setVisibility(View.VISIBLE);
-                    add3.setVisibility(View.INVISIBLE);
-                    add21.setVisibility(View.INVISIBLE);
-                    add11.setVisibility(View.INVISIBLE);
-                    add41.setVisibility(View.INVISIBLE);
-                    add2.setVisibility(View.VISIBLE);
-                    add1.setVisibility(View.VISIBLE);
-                    add4.setVisibility(View.VISIBLE);
-                    text1.setVisibility(View.GONE);
-                    text.setVisibility(View.GONE);
-                    text3.setVisibility(View.GONE);
-
-                }
-            });
-
-            add31.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    text2.setVisibility(View.GONE);
-                    add31.setVisibility(View.INVISIBLE);
-                    add3.setVisibility(View.VISIBLE);
-
-                }
-            });
-            add4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    text3.setVisibility(View.VISIBLE);
-                    add41.setVisibility(View.VISIBLE);
-                    add4.setVisibility(View.INVISIBLE);
-                    add21.setVisibility(View.INVISIBLE);
-                    add31.setVisibility(View.INVISIBLE);
-                    add11.setVisibility(View.INVISIBLE);
-                    add2.setVisibility(View.VISIBLE);
-                    add3.setVisibility(View.VISIBLE);
-                    add1.setVisibility(View.VISIBLE);
-                    text1.setVisibility(View.GONE);
-                    text2.setVisibility(View.GONE);
-                    text.setVisibility(View.GONE);
-
-                }
-            });
-
-            add41.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    text3.setVisibility(View.GONE);
-                    add41.setVisibility(View.INVISIBLE);
-                    add4.setVisibility(View.VISIBLE);
-
-                }
-            });*/
         }
     }
 }

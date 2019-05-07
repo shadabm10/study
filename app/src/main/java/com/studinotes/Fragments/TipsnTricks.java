@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +73,7 @@ public class TipsnTricks extends Fragment {
         sharedpreference = new Sharedpreference(getActivity());
         main_layout4 = rootView.findViewById(R.id.main_layout4);
 
-        final Button suggest = (Button) rootView.findViewById(R.id.suggest);
+        final Button suggest = rootView.findViewById(R.id.suggest);
         suggest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,8 +158,7 @@ public class TipsnTricks extends Fragment {
                             String is_active = images1.get("is_active").toString().replaceAll("\"", "");
                             String entry_date = images1.get("entry_date").toString().replaceAll("\"", "");
                             String modified_date = images1.get("modified_date").toString().replaceAll("\"", "");
-
-                            // globalClass.setCat_id(id);
+                            String content_text=(Html.fromHtml(content)).toString().replaceAll("\n", " ").trim();
                             HashMap<String, String> hashMap = new HashMap<>();
                             hashMap.put("id",id);
                             hashMap.put("title", title);
@@ -165,7 +166,7 @@ public class TipsnTricks extends Fragment {
                             hashMap.put("is_active", is_active);
                             hashMap.put("entry_date", entry_date);
                             hashMap.put("modified_date", modified_date);
-                            hashMap.put("content", content);
+                            hashMap.put("content", content_text);
 
                             tipsntricks.add(hashMap);
                             Log.d(TAG, "Hashmap " + hashMap);
@@ -183,6 +184,7 @@ public class TipsnTricks extends Fragment {
 
 
                 } catch (Exception e) {
+                    e.printStackTrace();
                     Toast.makeText(getContext(), "issue", Toast.LENGTH_LONG).show();
 
                 }

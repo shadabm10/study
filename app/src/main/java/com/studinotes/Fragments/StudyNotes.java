@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -83,7 +84,7 @@ public class StudyNotes extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.studynotes, container, false);
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         sharedpreference = new Sharedpreference(getActivity());
         main_layout = rootView.findViewById(R.id.main_layout);
         globalClass = (GlobalClass)getActivity().getApplicationContext();
@@ -95,12 +96,12 @@ public class StudyNotes extends Fragment  {
         pd.setMessage("Loading...");
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        final TextView text3 = (TextView) rootView.findViewById(R.id.text3);
+        final TextView text3 = rootView.findViewById(R.id.text3);
         text3.setText(globalClass.getFname()+"  "+globalClass.getLname());
         final TextView text4 = rootView.findViewById(R.id.text4);
         text4.setText(globalClass.getSchool_name());
-        search_value = rootView.findViewById(R.id.area);
-
+        search_value = rootView.findViewById(R.id.search_folder);
+          search_value.clearFocus();
         feedlist = new ArrayList<>();
         productDetaiils=new ArrayList<>();
         newSeacrh=new ArrayList<>();
@@ -128,24 +129,28 @@ public class StudyNotes extends Fragment  {
             @Override
             public void onClick(View v) {
                 searchfield.setVisibility(View.VISIBLE);
+                search_value.setVisibility(View.VISIBLE);
             }
         });
         search_value.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-              //  FolderList();
 
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(globalClass.isNetworkAvailable()){
-                    if (search_value.getText().equals("")){
+                    String string = charSequence.toString();
+                    if(string.equals("")){
                         FolderList();
                     }
                     else {
+
+
                         ViewList_new(search_value.getText().toString());
                     }
+
 
                 }else{
                     FancyToast.makeText(getActivity(), "Check Internet Connecton", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
@@ -154,7 +159,7 @@ public class StudyNotes extends Fragment  {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                FolderList();
+              //  FolderList();
 
             }
         });
@@ -173,7 +178,8 @@ public class StudyNotes extends Fragment  {
                  final Dialog dialog = new Dialog(getActivity());
                  dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.studynotes_dialog);
-                final Button yes,no,mustard,navy,black,darkgrey,terracotta;
+                final Button yes,no,mustard,navy,black,darkgrey,terracotta,light_blue,dark_green,
+                        light_green,orange,purple,red;
 
                  final Button mainbutton;
                final EditText name;
@@ -187,6 +193,12 @@ public class StudyNotes extends Fragment  {
                 black = dialog. findViewById(R.id.blackbutton);
                 darkgrey = dialog. findViewById(R.id.darkgreybutton);
                 terracotta = dialog. findViewById(R.id.terracottabutton);
+                light_blue = dialog. findViewById(R.id.blue_new);
+                dark_green = dialog. findViewById(R.id.deepGreen);
+                light_green = dialog. findViewById(R.id.lightGreen);
+                orange = dialog. findViewById(R.id.orange);
+                purple = dialog. findViewById(R.id.purple);
+                red = dialog. findViewById(R.id.red);
                 mainbutton =  dialog.findViewById(R.id.mainbutton);
                 yes.setOnClickListener(this);
                 no.setOnClickListener(this);
@@ -246,6 +258,60 @@ public class StudyNotes extends Fragment  {
 
                         mainbutton.setBackgroundResource(R.color.terracotta);
                         colorCode ="#C92700";
+                       // Log.d(TAG, "colorCode: "+ colorCode);
+                    }
+                });
+                light_blue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mainbutton.setBackgroundResource(R.color.blue_change);
+                        colorCode ="#0082f2";
+                       // Log.d(TAG, "colorCode: "+ colorCode);
+                    }
+                });
+                dark_green.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mainbutton.setBackgroundResource(R.color.deep_green);
+                        colorCode ="#008100";
+                       // Log.d(TAG, "colorCode: "+ colorCode);
+                    }
+                });
+                light_green.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mainbutton.setBackgroundResource(R.color.light_green);
+                        colorCode ="#00f600";
+                       // Log.d(TAG, "colorCode: "+ colorCode);
+                    }
+                });
+                orange.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mainbutton.setBackgroundResource(R.color.orange);
+                        colorCode ="#ff7c00";
+                       // Log.d(TAG, "colorCode: "+ colorCode);
+                    }
+                });
+                purple.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mainbutton.setBackgroundResource(R.color.purple);
+                        colorCode ="#ff00e6";
+                       // Log.d(TAG, "colorCode: "+ colorCode);
+                    }
+                });
+                red.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        mainbutton.setBackgroundResource(R.color.red);
+                        colorCode ="#ff0000";
                        // Log.d(TAG, "colorCode: "+ colorCode);
                     }
                 });
@@ -365,7 +431,8 @@ public class StudyNotes extends Fragment  {
                             hashMap.put("is_active", is_active);
                             hashMap.put("entry_date", entry_date);
                             hashMap.put("modified_date", modified_date);
-                         //   globalClass.setFolderid(id);
+                            hashMap.put("type", "folder");
+                           globalClass.setFolderid(id);
                           //  globalClass.setFolderanme(folder_name);
 
                             newSeacrh.add(hashMap);
@@ -373,7 +440,7 @@ public class StudyNotes extends Fragment  {
 
                         }
 
-                        adapterListFolder = new AdapterListFolder(getActivity(),newSeacrh,fragmentManager);
+                        adapterListFolder = new AdapterListFolder(getActivity(),newSeacrh,fragmentManager,pd);
                         recyclerView.setAdapter(adapterListFolder);
                         adapterListFolder.notifyDataSetChanged();
 
@@ -411,7 +478,7 @@ public class StudyNotes extends Fragment  {
                 params.put("folder_id", "0");
                 params.put("search_name", search_text);
 
-                Log.d(TAG, "getParams: "+params);
+                Log.d(TAG, "search "+params);
                 return params;
             }
 
@@ -475,6 +542,7 @@ public class StudyNotes extends Fragment  {
                             hashMap.put("is_active", is_active);
                             hashMap.put("entry_date", entry_date);
                             hashMap.put("modified_date", modified_date);
+                            hashMap.put("type", "folder");
                             globalClass.setFolderid(id);
                             globalClass.setFolderanme(folder_name);
 
@@ -483,7 +551,7 @@ public class StudyNotes extends Fragment  {
 
                         }
 
-                        adapterListFolder = new AdapterListFolder(getActivity(),productDetaiils,fragmentManager);
+                        adapterListFolder = new AdapterListFolder(getActivity(),productDetaiils,fragmentManager,pd);
                         recyclerView.setAdapter(adapterListFolder);
                         adapterListFolder.notifyDataSetChanged();
 

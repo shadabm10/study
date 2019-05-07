@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import android.support.v7.app.AppCompatActivity;
@@ -27,26 +28,35 @@ public class HomePage extends AppCompatActivity {
     GlobalClass global_class;
     Fragment fragment;
     boolean doubleBackToExitPressedOnce = false;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
-        loadFragment(new StudyNotes());
+      //  loadFragment(new StudyNotes());
 
         global_class = (GlobalClass)getApplicationContext();
 
 
-        fragment = new StudyNotes();
 
-        loadFragment(fragment);
-
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+         bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.bottom_navigation);
         bottomNavigationView.setItemIconTintList(null);
 
+
+
+        fragment = new StudyNotes();
+
         bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotesselected);
+        loadFragment(fragment);
+
+
+
+
+
+     //    bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotesselected);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -58,7 +68,11 @@ public class HomePage extends AppCompatActivity {
 
                                 fragment = new StudyNotes();
                                 // item.setCheckable(true);
-                                item.setIcon(R.drawable.selectimage);
+                                item.setIcon(R.drawable.studynotesselected);
+                                bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                                bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
+                                bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
+
                                 loadFragment(fragment);
                                 return true;
 
@@ -67,13 +81,21 @@ public class HomePage extends AppCompatActivity {
 
                                 fragment = new Assessment();
                                // item.getItemId(0)
-                                item.setIcon(R.drawable.selectasset);
+                                item.setIcon(R.drawable.assessmentsselected);
+                                bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotes);
+                                bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
+                                bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
+
                                 loadFragment(fragment);
                                 return true;
 
                             case R.id.profile:
                                 fragment = new TimeManagement();
-                                item.setIcon(R.drawable.select_time_management);
+                                item.setIcon(R.drawable.timemanagementselected);
+                                bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotes);
+                                bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                                bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
+
                                 loadFragment(fragment);
                                 return true;
 
@@ -81,7 +103,11 @@ public class HomePage extends AppCompatActivity {
 
 
                                 fragment = new TipsnTricks();
-                                item.setIcon(R.drawable.select_tips_trick);
+                                item.setIcon(R.drawable.tipsntricksselected);
+                                bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotes);
+                                bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                                bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
+
                                 loadFragment(fragment);
                                 return true;
 
@@ -89,7 +115,11 @@ public class HomePage extends AppCompatActivity {
 
                             default:
                                 fragment = new StudyNotes();
-                                item.setIcon(R.drawable.select_tips_trick);
+                                item.setIcon(R.drawable.studynotesselected);
+                                bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                                bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
+                                bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
+
                                 loadFragment(fragment);
                                 return true;
 
@@ -102,52 +132,68 @@ public class HomePage extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
-                Fragment fragment;
+               // Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.cart:
 
 
                         fragment = new StudyNotes();
-                      //  item.setIcon(R.mipmap.studynotes);
-                        loadFragment(fragment);
+                        // item.setCheckable(true);
+                        item.setIcon(R.drawable.studynotesselected);
+                        bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                        bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
+                        bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
 
+                        loadFragment(fragment);
 
                     case R.id.search:
 
 
                         fragment = new Assessment();
-                        //item.setIcon(R.mipmap.studynotes);
-                        loadFragment(fragment);
+                        // item.getItemId(0)
+                        item.setIcon(R.drawable.assessmentsselected);
+                        bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotes);
+                        bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
+                        bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
 
+                        loadFragment(fragment);
 
                     case R.id.profile:
                         fragment = new TimeManagement();
-                       // item.setIcon(R.mipmap.studynotes);
-                        loadFragment(fragment);
+                        item.setIcon(R.drawable.timemanagementselected);
+                        bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotes);
+                        bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                        bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
 
+                        loadFragment(fragment);
 
                     case R.id.profile1:
 
 
                         fragment = new TipsnTricks();
-                       // item.setIcon(R.mipmap.studynotes);
-                        loadFragment(fragment);
+                        item.setIcon(R.drawable.tipsntricksselected);
+                        bottomNavigationView.getMenu().getItem(0).setIcon(R.mipmap.studynotes);
+                        bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                        bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
 
+                        loadFragment(fragment);
 
 
 
                     default:
                         fragment = new StudyNotes();
+                        item.setIcon(R.drawable.studynotesselected);
+                        bottomNavigationView.getMenu().getItem(1).setIcon(R.mipmap.assessments);
+                        bottomNavigationView.getMenu().getItem(2).setIcon(R.mipmap.timemanagement);
+                        bottomNavigationView.getMenu().getItem(3).setIcon(R.mipmap.tipsntricks);
+
                         loadFragment(fragment);
-
-
 
                 }
 
 
             }
         });
-
 
 
      //   mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -162,10 +208,15 @@ public class HomePage extends AppCompatActivity {
 
     private void loadFragment(Fragment fragment) {
         // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      /*  FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.contentContainer, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+*/
+        FragmentManager fragmentManager2 = getSupportFragmentManager();
+        fragmentManager2.beginTransaction().replace(R.id.contentContainer, fragment).commit();
+       // fragmentManager2.addT
+
     }
 
 

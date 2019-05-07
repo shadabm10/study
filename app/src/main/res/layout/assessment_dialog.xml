@@ -90,12 +90,12 @@
 
         <EditText
             android:id="@+id/notify3"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingBottom="18dp"
             android:background="@android:color/transparent"
-            android:text="@string/notifyme"
+            android:hint="@string/notifyme"
             android:editable="false"
             android:textColor="@android:color/black"
             android:textSize="15sp"/>
@@ -108,6 +108,7 @@
             android:background="@android:color/transparent"
             android:paddingBottom="18dp"
             android:editable="false"
+            android:layout_marginRight="30dp"
             android:textColor="@android:color/black"
             android:textSize="15sp"/>
 
