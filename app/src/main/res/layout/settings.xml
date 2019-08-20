@@ -35,12 +35,24 @@
             />
 
     </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/backlayout">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+       >
 
     <RelativeLayout
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/backlayout"
+
         android:padding="10dp"
         android:orientation="horizontal">
 
@@ -218,9 +230,11 @@
     <HorizontalScrollView
         android:layout_below="@id/change"
         android:id="@+id/sc_main"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:clickable="false">
         <LinearLayout
             android:id="@+id/colors"
 
@@ -228,7 +242,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
-            android:visibility="visible">
+           >
             <RelativeLayout
                 android:id="@+id/rl_biscuit"
                 android:layout_width="wrap_content"
@@ -367,6 +381,58 @@
         android:layout_height="2dp"
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/sc_main"/>
+    <RelativeLayout
+        android:id="@+id/rl_chart"
+        android:layout_below="@id/view2"
+        android:layout_marginTop="10dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/usedspace"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@android:color/white"
+            android:background="@color/red"
+           />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/free_space"
+            android:layout_marginTop="5dp"
+            android:textSize="14dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@android:color/white"
+            android:background="@color/blue"
+            android:layout_below="@+id/usedspace"
+            />
+        <TextView
+            android:id="@+id/upgrade_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="20dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/white"
+            android:background="@drawable/save_button"
+            android:text="Upgrade Plan"/>
+        <lecho.lib.hellocharts.view.PieChartView
+            android:id="@+id/chart"
+            android:layout_marginTop="60dp"
+            android:layout_width="wrap_content"
+
+            android:layout_height="200dp" />
+
+
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/logout"
@@ -377,8 +443,9 @@
         android:textSize="15dp"
         android:drawableRight="@mipmap/logout"
         android:drawablePadding="20dp"
-        android:layout_below="@id/view2"
+        android:layout_below="@+id/rl_chart"
         android:textColor="@color/black"/>
-
+    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

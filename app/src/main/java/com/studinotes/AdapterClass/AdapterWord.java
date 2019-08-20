@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.shashank.sony.fancytoastlib.FancyToast;
 import com.squareup.picasso.Picasso;
+import com.studinotes.Activities.ActivityNotepad;
 import com.studinotes.Activities.ViewFile;
 import com.studinotes.Constant.AppConfig;
 import com.studinotes.Fragments.StudyNotes;
@@ -45,16 +46,17 @@ public class AdapterWord extends RecyclerView.Adapter<AdapterWord.PlanetViewHold
  ProgressDialog pd;
     String file_type,file_name,type,file_url;
     StudyNotesFoldersOnClick studyNotesFoldersOnClick;
- String id;
+ String id,parent_id;
  FragmentManager fragmentManager;
 // int [] imageId,imageId1,imageId2,imageId3,imageId4;
 
-public AdapterWord(ArrayList<HashMap<String,String>>videoList, Context context, ProgressDialog pd,FragmentManager fragmentManager,StudyNotesFoldersOnClick studyNotesFoldersOnClick) {
+public AdapterWord(ArrayList<HashMap<String,String>>videoList, Context context, ProgressDialog pd,FragmentManager fragmentManager,StudyNotesFoldersOnClick studyNotesFoldersOnClick,String parent_id) {
         this.videoList = videoList;
         this.context=context;
         this.fragmentManager=fragmentManager;
         this.studyNotesFoldersOnClick=studyNotesFoldersOnClick;
         this.pd=pd;
+        this.parent_id=parent_id;
         }
 
 @Override
@@ -82,22 +84,32 @@ public void onBindViewHolder(AdapterWord.PlanetViewHolder holder, final int posi
     Log.d(TAG, "file_name = " +file_name);
 
        // holder.image.setImageResource(R.mipmap.document);
-    if(videoList.get(position).get("file_type_inner").equals("image"))
+    if(videoList.get(position).get("file_type_inner").equals("IMAGE"))
     {
         Picasso.with(context).load(videoList.get(position).get("file_url")).into(holder.image);
+
     }
-    else if(videoList.get(position).get("file_type_inner").equals("video")){
+    else if(videoList.get(position).get("file_type_inner").equals("VIDEO")){
         holder.image.setImageResource(R.mipmap.video);
     }
-    else if(videoList.get(position).get("file_type_inner").equals("pdf")){
+    else if(videoList.get(position).get("file_type_inner").equals("PDF")){
         holder.image.setImageResource(R.mipmap.document);
     }
-    else if(videoList.get(position).get("file_type_inner").equals("MSWord")){
+    else if(videoList.get(position).get("file_type_inner").equals("Microsoft Word")){
         holder.image.setImageResource(R.mipmap.document);
     }
-    else if(videoList.get(position).get("file_type_inner").equals("Power Point")){
+    else if(videoList.get(position).get("file_type_inner").equals("Microsoft Powerpoint")){
         holder.image.setImageResource(R.mipmap.document);
     }
+    else if(videoList.get(position).get("file_type_inner").equals("AUDIO")){
+        holder.image.setImageResource(R.mipmap.audio);
+    }
+    else if(videoList.get(position).get("file_type_inner").equals("Microsoft Excel")){
+        holder.image.setImageResource(R.mipmap.document);
+    }else if(videoList.get(position).get("file_type_inner").equals("NotePad")){
+        holder.image.setImageResource(R.mipmap.icn_notes);
+    }
+
     holder.text.setText(videoList.get(position).get("file_name"));
         /*holder.text.setText(videoList.get(position).toString());
         if(videoList.get(position).get("file_type_inner").equals("video")){
@@ -107,13 +119,27 @@ public void onBindViewHolder(AdapterWord.PlanetViewHolder holder, final int posi
     holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+          if(videoList.get(position).get("file_type_inner").equals("NotePad")){
 
-            Intent intent = new Intent(context, ViewFile.class);
-            intent.putExtra("file_url", videoList.get(position).get("file_url"));
-           // startActivity(intent);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+              Intent intent = new Intent(context, ActivityNotepad.class);
+              intent.putExtra("file_url", videoList.get(position).get("file_url"));
+              intent.putExtra("from", "edit");
+              intent.putExtra("file_id", id);
+              intent.putExtra("parent_id", parent_id);
+              // startActivity(intent);
+              intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            context.startActivity(intent);
+              context.startActivity(intent);
+          }
+          else {
+              Intent intent = new Intent(context, ViewFile.class);
+              intent.putExtra("file_url", videoList.get(position).get("file_url"));
+              intent.putExtra("file_type_inner", videoList.get(position).get("file_type_inner"));
+              // startActivity(intent);
+              intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+              context.startActivity(intent);
+          }
 
         }
     });
@@ -146,13 +172,13 @@ public  class PlanetViewHolder extends RecyclerView.ViewHolder{
 
                 // set dialog message
                 alertDialogBuilder
-                        .setMessage("Want to delete the folder")
+                        .setMessage("Do you want to delete this folder? ")
                         .setCancelable(false)
                         .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 // if this button is clicked, close
                                 // current activity
-                                DeleteFolder();
+                                DeleteFolder(videoList.get(getAdapterPosition()).get("id"));
                             }
                         })
                         .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -176,7 +202,7 @@ public  class PlanetViewHolder extends RecyclerView.ViewHolder{
 
 
     }
-    private void DeleteFolder() {
+    private void DeleteFolder(String id) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 

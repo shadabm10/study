@@ -148,7 +148,7 @@ public class Examination_adapter extends RecyclerView.Adapter<Examination_adapte
                                 // if this button is clicked, close
                                 // current activity
 
-                                DeleteFolder();
+                                DeleteFolder(assessment.get(getAdapterPosition()).get("id"));
                             }
                         })
                         .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -173,7 +173,7 @@ public class Examination_adapter extends RecyclerView.Adapter<Examination_adapte
 
         }
     }
-    private void DeleteFolder() {
+    private void DeleteFolder(String id) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -347,13 +347,14 @@ public class Examination_adapter extends RecyclerView.Adapter<Examination_adapte
                 String str_exam_name=examname.getText().toString().trim();
                 String str_subject= subjectname.getText().toString().trim();
                 String exam_date= examdate.getText().toString().trim();
+                String str_exam_time=examtime.getText().toString().trim();
                // notify_date_time=date_notify_exam+" "+time_notify;
               //  Log.d(TAG, "notify_date_time: "+notify_date_time);
                 if(!examname.getText().toString().isEmpty()){
                     if(!subjectname.getText().toString().isEmpty()){
                         if(!examdate.getText().toString().isEmpty()){
                             if(!examtime.getText().toString().isEmpty()){
-                                EditExamination(str_exam_name,str_subject,exam_date,exam_time);
+                                EditExamination(str_exam_name,str_subject,exam_date,str_exam_time);
                                 alertDialog.dismiss();
 
                             }
@@ -540,23 +541,22 @@ public class Examination_adapter extends RecyclerView.Adapter<Examination_adapte
             };
 
 
-    private void timePicker() {
+    private void timePicker(){
         // Get Current Time
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
-        mSecond=c.get(Calendar.SECOND);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
 
-        // Launch Time Picker Dialog
-        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(context, (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
-            // TODO Auto-generated method stub
-            exam_time= String.format("%02d", hourOfDay)+
-                    ":" + String.format("%02d", minute) +
-                    ":" + String.format("%02d", seconds);
-            examtime.setText(exam_time);
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                examtime.setText( ""+selectedHour + ":" + selectedMinute);
+            }
+        }, mHour, mMinute,true);
 
-        }, mHour, mMinute, mSecond, true);
         mTimePicker.show();
+
     }
 
     private void timePicker1(){

@@ -51,6 +51,7 @@ public class ViewFile extends AppCompatActivity {
     MediaController ctrl;
     SimpleExoPlayerView exoPlayerView;
     SimpleExoPlayer exoPlayer;
+    MediaPlayer  mediaPlayer = new MediaPlayer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +66,31 @@ public class ViewFile extends AppCompatActivity {
         Log.d(TAG, "extension: " + extension);
         view = findViewById(R.id.webView);
        // videoView = findViewById(R.id.videoView);
-
+        view.setWebViewClient(new AppWebViewClients());
+        view.getSettings().setUseWideViewPort(true);
         view.getSettings().setJavaScriptEnabled(true);
         if (extension.equals("jpeg") || extension.equals("jpg") || extension.equals("png") || extension.equals("tiff")) {
             String imgSrcHtml = "<html><img src='" + file_url + "' /></html>";
             view.loadData(imgSrcHtml, "text/html", "UTF-8");
         } else if (extension.equals("pdf")) {
-            view.loadUrl("https://docs.google.com/gview?embedded=true&url=" + file_url);
-        } else if (extension.equals("mp4")) {
+            view.loadUrl("https://docs.google.com/gview?embedded=true&url="+file_url);
+        }
+        else if(extension.equals("doc")||extension.equals("docx")){
+            view.loadData(frameVideo,"text/html", "UTF-8");
+            view.loadUrl("http://docs.google.com/gview?embedded=true&url="+file_url);
+
+        }
+        else if(extension.equals("xls")||extension.equals("xlsx")){
+            view.loadData(frameVideo,"text/html", "UTF-8");
+            view.loadUrl("http://docs.google.com/gview?embedded=true&url="+file_url);
+
+        }
+        else if(extension.equals("ppt")||extension.equals("pptx")){
+            view.loadData(frameVideo,"text/html", "UTF-8");
+            view.loadUrl("http://docs.google.com/gview?embedded=true&url="+file_url);
+
+        }
+        else if (extension.equals("mp4")) {
              view.setVisibility(View.GONE);
             exoPlayerView.setVisibility(View.VISIBLE);
 
@@ -102,6 +120,31 @@ public class ViewFile extends AppCompatActivity {
 
 
         }
+        else if( (extension.equals("mp3"))||(extension.equals("wav"))){
+            view.setVisibility(View.GONE);
+            exoPlayerView.setVisibility(View.VISIBLE);
+
+            try {
+
+
+                BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+                TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
+                exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+
+                Uri videoURI = Uri.parse(file_url);
+
+                DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory("exoplayer_video");
+                ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+                MediaSource mediaSource = new ExtractorMediaSource(videoURI, dataSourceFactory, extractorsFactory, null, null);
+
+                exoPlayerView.setPlayer(exoPlayer);
+                exoPlayer.prepare(mediaSource);
+                exoPlayer.setPlayWhenReady(true);
+            }catch (Exception e){
+                Log.e("MainAcvtivity"," exoplayer error "+ e.toString());
+            }
+
+        }
         back=findViewById(R.id.toolbar_back);
 
 
@@ -111,6 +154,40 @@ public class ViewFile extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
             }
         });
-        back.setOnClickListener(view -> finish());
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+                if(exoPlayer!= null){
+                    exoPlayer.stop();
+                    exoPlayer.release();
+                    exoPlayer = null;
+                }
+                finish();
+            }
+        });
+    }
+    public class AppWebViewClients extends WebViewClient {
+
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // TODO Auto-generated method stub
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            // TODO Auto-generated method stub
+            super.onPageFinished(view, url);
+
+        }
     }
 }

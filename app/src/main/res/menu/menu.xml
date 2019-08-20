@@ -23,6 +23,6 @@
         android:id="@+id/profile1"
         android:enabled="true"
         android:icon="@mipmap/tipsntricks"
-        android:title="Tips and Tricks"
+        android:title="Tips ‘n Tricks "
         app:showAsAction="ifRoom" />
 </menu>

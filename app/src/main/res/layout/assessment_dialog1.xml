@@ -63,7 +63,7 @@
         android:layout_height="wrap_content">
         <EditText
             android:id="@+id/assesstime"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingBottom="18dp"
@@ -74,6 +74,20 @@
             android:layout_marginRight="40dp"
             android:textSize="15dp"
             />
+        <EditText
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="18dp"
+           android:layout_toRightOf="@+id/assesstime"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:editable="false"
+            android:layout_marginRight="40dp"
+            android:textSize="15dp"
+            />
+
         <ImageButton
             android:id="@+id/clock1"
             android:layout_width="wrap_content"

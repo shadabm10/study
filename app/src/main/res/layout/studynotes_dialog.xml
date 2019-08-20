@@ -2,7 +2,7 @@
 <LinearLayout
     android:id="@+id/folder"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/allcurve_white"
     android:orientation="vertical"
@@ -37,6 +37,7 @@
             android:id="@+id/mainbutton"
             android:layout_width="20dp"
             android:layout_height="20dp"
+
             android:background="@color/mustard"/>
 
     </LinearLayout>

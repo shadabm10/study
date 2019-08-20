@@ -24,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TimePicker;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import android.app.ProgressDialog;
@@ -50,6 +52,7 @@ import com.studinotes.Utils.GlobalClass;
 import com.studinotes.Utils.Shared_Preference;
 import com.studinotes.Utils.Utils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -78,11 +81,11 @@ public class Assessment extends Fragment {
     Sharedpreference sharedpreference;
     Shared_Preference preference;
     Calendar myCalendar = Calendar.getInstance();
-    String str_exam_date,exam_time,access_date,asses_time,exam_notify,assess_notify,
+    String str_exam_date,exam_time,access_date,asses_time,exam_notify,assess_notify,ass_datetime,
             time_notify,date_notify_exam,notify_date_time,exam_date;
     ArrayList<HashMap<String,String>> SearchExam;
     ArrayList<HashMap<String,String>> SearchAsses;
-    EditText area;
+    EditText area,time;
 
     private int mYear, mMonth, mDay, mHour, mMinute,mSecond;
 
@@ -295,14 +298,31 @@ public class Assessment extends Fragment {
                                 String is_active = images1.get("is_active").toString().replaceAll("\"", "");
                                 String entry_date = images1.get("entry_date").toString().replaceAll("\"", "");
                                 String modified_date = images1.get("modified_date").toString().replaceAll("\"", "");
+                                DateFormat df = new SimpleDateFormat("HH:mm");
+                                DateFormat outputformat = new SimpleDateFormat("hh:mm aa");
+                                Date date = null;
 
+                                String output = null;
+
+                                try{
+                                    //Conversion of input String to date
+                                    date= df.parse(exam_time);
+
+                                    //old date format to new date format
+                                    output = outputformat.format(date);
+
+                                    System.out.println(output);
+
+                                }catch(ParseException pe){
+                                    pe.printStackTrace();
+                                }
                                 // globalClass.setCat_id(id);
                                 HashMap<String, String> hashMap = new HashMap<>();
                                 hashMap.put("id", id);
                                 hashMap.put("user_id", user_id);
                                 hashMap.put("exam_name", exam_name);
                                 hashMap.put("exam_date", exam_date);
-                                hashMap.put("exam_time", exam_time);
+                                hashMap.put("exam_time", output);
                                 hashMap.put("exam_subject", exam_subject);
                                 hashMap.put("exam_details", exam_details);
                                 hashMap.put("exam_notify", exam_notify);
@@ -339,14 +359,34 @@ public class Assessment extends Fragment {
                                 String is_active = images1.get("is_active").toString().replaceAll("\"", "");
                                 String entry_date = images1.get("entry_date").toString().replaceAll("\"", "");
                                 String modified_date = images1.get("modified_date").toString().replaceAll("\"", "");
+                                String[] ass_time_update = ass_time.split(" ");
+                                String ay=ass_time_update[1];
+                                Log.d(TAG, "ass_time_update: "+ay);
 
-                                // globalClass.setCat_id(id);
+                                DateFormat df = new SimpleDateFormat("HH:mm");
+                                DateFormat outputformat = new SimpleDateFormat("hh:mm aa");
+                                Date date = null;
+
+                                String output = null;
+
+                                try{
+                                    //Conversion of input String to date
+                                    date= df.parse(ay);
+
+                                    //old date format to new date format
+                                    output = outputformat.format(date);
+
+                                    System.out.println(output);
+
+                                }catch(ParseException pe){
+                                    pe.printStackTrace();
+                                }
                                 HashMap<String, String> hashMap = new HashMap<>();
                                 hashMap.put("id",id);
                                 hashMap.put("user_id",user_id);
                                 hashMap.put("ass_name", ass_name);
                                 hashMap.put("ass_date", ass_date);
-                                hashMap.put("ass_time", ass_time);
+                                hashMap.put("ass_time", output);
                                 hashMap.put("ass_subject", ass_subject);
                                 hashMap.put("ass_details", ass_details);
                                 hashMap.put("ass_notify", ass_notify);
@@ -484,13 +524,14 @@ public class Assessment extends Fragment {
                 String str_exam_name=examname.getText().toString().trim();
                 String str_subject= subjectname.getText().toString().trim();
                 String exam_date= examdate.getText().toString().trim();
+                String str_exam_time=examtime.getText().toString().trim();
                  notify_date_time=date_notify_exam+" "+time_notify;
                 Log.d(TAG, "notify_date_time: "+notify_date_time);
                 if(!examname.getText().toString().isEmpty()){
                     if(!subjectname.getText().toString().isEmpty()){
                         if(!examdate.getText().toString().isEmpty()){
                             if(!examtime.getText().toString().isEmpty()){
-                                SaveExamination(str_exam_name,str_subject,exam_date,exam_time);
+                                SaveExamination(str_exam_name,str_subject,exam_date,str_exam_time);
                                 alertDialog.dismiss();
 
                             }
@@ -638,6 +679,7 @@ public class Assessment extends Fragment {
         accesstime = dialogView.findViewById(R.id.assesstime);
         notify5 = dialogView.findViewById(R.id.notify5);
         notify6 = dialogView.findViewById(R.id.notify6);
+        time=dialogView.findViewById(R.id.time);
         access_details = dialogView.findViewById(R.id.access_details);
 
 
@@ -658,7 +700,18 @@ public class Assessment extends Fragment {
 
         });
 
-        clock1.setOnClickListener(v -> timePicker2());
+        clock1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePicker2();
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                new DatePickerDialog(getActivity(), datePickerListener4, mYear, mMonth, mDay).show();
+            }
+        });
 
         bell3.setOnClickListener(v -> {
 
@@ -682,7 +735,7 @@ public class Assessment extends Fragment {
 
                 String str_exam_name=asses_name.getText().toString().trim();
                 String str_subject= subjectname_assess.getText().toString().trim();
-                String exam_date= accessdate.getText().toString().trim();
+               String exam_date= accessdate.getText().toString().trim();
                 notify_date_time=date_notify_exam+" "+time_notify;
                 Log.d(TAG, "notify_date_time: "+notify_date_time);
                 if(!asses_name.getText().toString().isEmpty()){
@@ -803,24 +856,42 @@ public class Assessment extends Fragment {
                 }
             };
 
+    private DatePickerDialog.OnDateSetListener datePickerListener4 =
+            new DatePickerDialog.OnDateSetListener() {
+
+                public void onDateSet(DatePicker view, int selectedYear,
+                                      int selectedMonth, int selectedDay) {
+                    myCalendar.set(Calendar.YEAR, selectedYear);
+                    myCalendar.set(Calendar.MONTH, selectedMonth);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+                    String myFormat = "MMM dd, yyyy";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    ass_datetime = sdf1.format(myCalendar.getTime());
+                    String date_to_show = sdf.format(myCalendar.getTime());
+                    time.setText(ass_datetime);
+
+                    //notify5.setText(date);
+
+                }
+            };
 
     private void timePicker(){
         // Get Current Time
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
-        mSecond=c.get(Calendar.SECOND);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
 
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                examtime.setText( ""+selectedHour + ":" + selectedMinute);
+            }
+        }, mHour, mMinute,true);
 
-        // Launch Time Picker Dialog
-        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getActivity(), (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
-            // TODO Auto-generated method stub
-            exam_time= String.format("%02d", hourOfDay)+
-                    ":" + String.format("%02d", minute) +
-                    ":" + String.format("%02d", seconds);
-            examtime.setText(exam_time);
-        }, mHour, mMinute, mSecond, true);
         mTimePicker.show();
+
     }
 
     private void timePicker1(){
@@ -829,14 +900,24 @@ public class Assessment extends Fragment {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        // Launch Time Picker Dialog
-        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getActivity(), (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
+      /*  // Launch Time Picker Dialog
+        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getActivity(), (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute) -> {
             // TODO Auto-generated method stub
             time_notify= String.format("%02d", hourOfDay)+
                     ":" + String.format("%02d", minute) +
-                    ":" + String.format("%02d", seconds);
+                    "" ;
             notify_bell.setText(exam_time);
         }, mHour, mMinute, mSecond, true);
+        mTimePicker.show();*/
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                notify_bell.setText( ""+selectedHour + ":" + selectedMinute);
+            }
+        }, mHour, mMinute,true);
+
         mTimePicker.show();
     }
 
@@ -848,13 +929,23 @@ public class Assessment extends Fragment {
         mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
-        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getActivity(), (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
+       /* MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getActivity(), (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
             // TODO Auto-generated method stub
             assess_notify= String.format("%02d", hourOfDay)+
                     ":" + String.format("%02d", minute) +
-                    ":" + String.format("%02d", seconds);
+                    "" ;
             accesstime.setText(assess_notify);
         }, mHour, mMinute, mSecond, true);
+        mTimePicker.show();*/
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                accesstime.setText( ""+selectedHour + ":" + selectedMinute);
+            }
+        }, mHour, mMinute,true);
+
         mTimePicker.show();
     }
 
@@ -864,14 +955,24 @@ public class Assessment extends Fragment {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        // Launch Time Picker Dialog
+       /* // Launch Time Picker Dialog
         MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getActivity(), (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
             // TODO Auto-generated method stub
             time_notify= String.format("%02d", hourOfDay)+
                     ":" + String.format("%02d", minute) +
-                    ":" + String.format("%02d", seconds);
+                    "" ;
             notify6.setText(time_notify);
         }, mHour, mMinute, mSecond, true);
+        mTimePicker.show();*/
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                notify6.setText( ""+selectedHour + ":" + selectedMinute);
+            }
+        }, mHour, mMinute,true);
+
         mTimePicker.show();
     }
 
@@ -943,8 +1044,8 @@ public class Assessment extends Fragment {
 
                 params.put("userid",globalClass.getId());
                 params.put("ass_name",str_exam_name);
-                params.put("ass_date",exam_date);
-                params.put("ass_time",exam_time);
+                params.put("ass_start_date",exam_date);
+                params.put("due_date_time",time.getText().toString()+" "+accesstime.getText().toString());
                 params.put("ass_subject",str_subject);
 
 

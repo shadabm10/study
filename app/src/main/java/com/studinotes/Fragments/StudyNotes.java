@@ -56,7 +56,7 @@ import java.util.Map;
 import static com.studinotes.Fragments.TipsnTricks.TAG;
 
 /**
- * Created by Belal on 2/3/2016.
+ * Created by Shadab Mallick on 2/3/2016.
  */
 
 //Our class extending fragment
@@ -75,9 +75,10 @@ public class StudyNotes extends Fragment  {
     String colorCode;
     EditText search_value;
     FragmentManager fragmentManager;
-
+     TextView text5;
     public ArrayList<FeedItem> feedlist;
     ProgressDialog pd;
+    View view1;
 
     //Overriden method onCreateView
     @Override
@@ -87,6 +88,7 @@ public class StudyNotes extends Fragment  {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         sharedpreference = new Sharedpreference(getActivity());
         main_layout = rootView.findViewById(R.id.main_layout);
+        view1 = rootView.findViewById(R.id.view1);
         globalClass = (GlobalClass)getActivity().getApplicationContext();
         prefrence = new Shared_Preference(getActivity());
         prefrence.loadPrefrence();
@@ -97,6 +99,7 @@ public class StudyNotes extends Fragment  {
         fragmentManager = getActivity().getSupportFragmentManager();
 
         final TextView text3 = rootView.findViewById(R.id.text3);
+        text5= rootView.findViewById(R.id.text5);
         text3.setText(globalClass.getFname()+"  "+globalClass.getLname());
         final TextView text4 = rootView.findViewById(R.id.text4);
         text4.setText(globalClass.getSchool_name());
@@ -518,7 +521,14 @@ public class StudyNotes extends Fragment  {
 
                     if (result.equals("1")) {
                         JsonArray product=jobj.getAsJsonArray("data");
-
+                        if(product.size()>0) {
+                            text5.setText("FOLDER");
+                            view1.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            text5.setText("");
+                            view1.setVisibility(View.GONE);
+                        }
                         for (int i = 0; i < product.size(); i++) {
                             JsonObject images1 = product.get(i).getAsJsonObject();
                             String id = images1.get("id").toString().replaceAll("\"", "");

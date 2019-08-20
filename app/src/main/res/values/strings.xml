@@ -20,13 +20,14 @@
     <string name="tips">Tips and Tricks</string>
     <string name="time">Time Management</string>
     <string name="examname">Exam Name</string>
-    <string name="subjectname">Sub</string>
+    <string name="subjectname">Subject Name</string>
+    <string name="only_subject">Subject</string>
     <string name="examdate">Exam Date</string>
     <string name="examtime">Exam Time</string>
     <string name="notifyme">Notify Me</string>
     <string name="assessname">Assessment Name</string>
-    <string name="assessdate">Assessment Date</string>
-    <string name="assesstime">Assessment Time</string>
+    <string name="assessdate">Start Date</string>
+    <string name="assesstime">Due Date Time</string>
     <string name="examdetail">Exam Details</string>
     <string name="assessdetail">Assessment Details</string>
     <string name="schedule">Create Schedule</string>
@@ -50,6 +51,7 @@
     <string name="maths">Mathematics</string>
     <string name="edit">Edit</string>
     <string name="name">Jon Dove</string>
+    <string name="notepad">Notepad</string>
     <string name="random1">Random</string>
     <string name="important">Important</string>
     <string name="random">Random/Important</string>
@@ -59,9 +61,13 @@
     <string name="change">Change background color</string>
     <string name="lorem">Lorem ipsum is a dummy text used to replace text in some areas just for the purpose of an example. It can be used in publishing and graphic design. It is used to demonstrate the graphics elements of a document, such as font, typography, and layout.</string>
     <string name="create1">Create Folder</string>
-    <string name="upload">Add Document</string>
+    <string name="upload">Add Documents</string>
     <string name="insert">Add Image</string>
     <string name="open">Add Video </string>
+    <string name="add_audio">Add Audio </string>
+    <string name="add_other_files">Add Others Files </string>
+    <string name="add_notepad">Add Note Pad </string>
+    <string name="add_drawingpad">Add Drawing Pad </string>
     <string name="loading">Loading</string>
     <string name="empty_first_name">Empty First Name</string>
     <string name="empty_second_name">Empty Last Name</string>
@@ -86,6 +92,11 @@
     <string name="enter_exam_date">Please Enter Exam Date </string>
     <string name="enter_exam_time">Please Enter Exam Time </string>
 
-
+    <string name="mosaic">Mosaic</string>
+    <string name="scale_gesture_item">Scale gesture</string>
+    <string name="guide">Doodle Guide</string>
+    <string name="simple_doodle">Simple doodle</string>
+    <string name="middle_doodle">Middle doodle</string>
+    <string name="advanced_doodle">Advanced doodle</string>
 
 </resources>

@@ -20,12 +20,15 @@ import java.util.List;
  */
 
 public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<RecyclerViewHorizontalListAdapter.GroceryViewHolder>{
-    ArrayList<HashMap<String,String>> videoList;    // Context context;
+    ArrayList<HashMap<String,String>> videoList;   // Context context;
     Context context;
+    ArrayList<HashMap<String,String>> planSubList;
 
-    public RecyclerViewHorizontalListAdapter(ArrayList<HashMap<String,String>>videoList, Context context){
+
+    public RecyclerViewHorizontalListAdapter( Context context,    ArrayList<HashMap<String,String>> planSubList){
         this.videoList= videoList;
         this.context = context;
+        this.planSubList = planSubList;
     }
 
     @Override
@@ -38,14 +41,23 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
 
     @Override
     public void onBindViewHolder(GroceryViewHolder holder, final int position) {
+        String notify_me=planSubList.get(position).get("notify_me");
+        if (notify_me.equals("Y")){
+            holder.imageView.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.imageView.setVisibility(View.GONE);
+
+        }
       //  holder.imageView.setImageResource(horizontalGrocderyList.get(position).getSubject_name());
-        holder.txtview.setText(videoList.get(position).get(""));
-        holder.time.setText(videoList.get(position).get(""));
+        holder.txtview.setText(planSubList.get(position).get("subject_name"));
+        holder.time.setText(planSubList.get(position).get("start_time")+" to "+planSubList.get(position).get("end_time"));
+
     }
 
     @Override
     public int getItemCount() {
-        return videoList.size();
+        return planSubList.size();
     }
 
     public class GroceryViewHolder extends RecyclerView.ViewHolder {

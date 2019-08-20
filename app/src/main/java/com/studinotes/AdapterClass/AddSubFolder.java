@@ -330,7 +330,7 @@ public class AddSubFolder extends RecyclerView.Adapter<AddSubFolder.PlanetViewHo
 
                     // set dialog message
                     alertDialogBuilder
-                            .setMessage("Want to delete the folder")
+                            .setMessage("Do you want to delete this folder?")
                             .setCancelable(false)
                             .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {

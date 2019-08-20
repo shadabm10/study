@@ -28,13 +28,11 @@ public class Utils {
     public static void changeToTheme(Activity activity, int theme) {
 
         cTheme = theme;
-       // onActivityCreateSetTheme(activity);
+
         activity.finish();
-       /* Intent intent = new Intent(activity.getContext(), Utils.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        getContext().startActivity(intent);*/
+
         activity.startActivity(new Intent(activity, activity.getClass()));
-     //   PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
 
 

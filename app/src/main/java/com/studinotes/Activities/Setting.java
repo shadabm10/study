@@ -1,15 +1,20 @@
 package com.studinotes.Activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -17,14 +22,24 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +58,7 @@ import com.loopj.android.http.RequestParams;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.shashank.sony.fancytoastlib.FancyToast;
 import com.squareup.picasso.Picasso;
+import com.studinotes.AdapterClass.AdapterPlan;
 import com.studinotes.Constant.AppConfig;
 import com.studinotes.Utils.GlobalClass;
 import com.studinotes.Utils.Shared_Preference;
@@ -61,11 +77,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.view.PieChartView;
 
 //import static com.example.studinotes.Sharedpreference.THEME_WHITE;
 
@@ -75,23 +95,29 @@ public class Setting  extends AppCompatActivity {
     File p_image;
     GlobalClass globalClass;
     Shared_Preference prefrence;
-    TextView edt_firsr,edt_mail,edt_school,last;
+    TextView edt_firsr,edt_mail,edt_school,last,tv_used_space,tv_free_space;
     EditText edt_name,edt_school1,edt_email,edt_last;
     ProgressDialog pd;
     RelativeLayout rl_biscuit,rl_white,rl_sky_blue,rl_pesto,rl_fave,rl_calm,rl_grey,rl_pink,rl_light_blue;
-    TextView logout;
+    TextView logout,upgrade_button;
+    RecyclerView lockRecycle;
+    ArrayList<HashMap<String,String>> examination_arraylist;
+    HorizontalScrollView sc_main;
+    LinearLayout colors;
+     AdapterPlan adapterLock;
     CircularImageView image1;
     RelativeLayout main2,nameedit,first,name;
     ImageButton edit,back1;
+    BottomSheetDialog mBottomDialogNotificationAction;
     Button savebutton,bck1, bck2, bck3, bck4, bck5, bck6, bck7,bck8,editpicture,white;
     int[] image_array = new int[] { R.drawable.circle_black };
     Sharedpreference sharedpreference;
+    PieChartView pieChartView;
+    String ButtonCode="";
+    String free_space,used_space;
+    double result_free_space,result_used_space;
     private static int RESULT_LOAD_IMAGE = 1;
     private final int PICK_IMAGE_CAMERA = 1, PICK_IMAGE_GALLERY = 2;
-
-
-
-
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -102,7 +128,13 @@ public class Setting  extends AppCompatActivity {
 
         editpicture = findViewById(R.id.editpicture);
         nameedit = findViewById(R.id.nameedit);
+        tv_used_space = findViewById(R.id.usedspace);
+        tv_free_space = findViewById(R.id.free_space);
         name = findViewById(R.id.name);
+        upgrade_button = findViewById(R.id.upgrade_button);
+        sc_main = findViewById(R.id.sc_main);
+        bck6 =  findViewById(R.id.lightgrey);
+        colors = findViewById(R.id.colors);
         rl_biscuit = findViewById(R.id.rl_biscuit);
         rl_calm = findViewById(R.id.rl_calm);
         rl_fave = findViewById(R.id.rl_fave);
@@ -111,6 +143,8 @@ public class Setting  extends AppCompatActivity {
         rl_pesto = findViewById(R.id.rl_pesto);
         rl_pink = findViewById(R.id.rl_pink);
         rl_sky_blue = findViewById(R.id.rl_sky_blue);
+        bck7 =  findViewById(R.id.pink);
+        bck8 =  findViewById(R.id.lightblue);
         rl_white = findViewById(R.id.rl_white);
         savebutton = findViewById(R.id.savebutton);
         edit = findViewById(R.id.edit);
@@ -118,13 +152,21 @@ public class Setting  extends AppCompatActivity {
         edt_name= findViewById(R.id.edt_firsr);
         edt_school1= findViewById(R.id.two1);
         edt_email= findViewById(R.id.three1);
+        bck4 =  findViewById(R.id.fave);
         edt_firsr= findViewById(R.id.one);
         edt_mail= findViewById(R.id.three);
         edt_school= findViewById(R.id.two);
         image1= findViewById(R.id.image);
+        bck1 =  findViewById(R.id.biscuit);
+        bck2 = findViewById(R.id.skyblue);
+        bck3 =  findViewById(R.id.pesto);
         white= findViewById(R.id.white);
+        bck5 =  findViewById(R.id.calmgreen);
+        white.setEnabled(false);
+        white.setFocusable(false);
         last= findViewById(R.id.last);
         edt_last= findViewById(R.id.edt_last);
+        pieChartView = findViewById(R.id.chart);
         deviceid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         globalClass = (GlobalClass)getApplicationContext();
@@ -133,6 +175,11 @@ public class Setting  extends AppCompatActivity {
         pd=new ProgressDialog(Setting.this);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.setMessage("Loading...");
+        examination_arraylist = new ArrayList<>();
+        getProfile();
+        Log.d(TAG, "result_free_space: "+result_free_space);
+
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(Setting.this,
                     Manifest.permission.CAMERA)
@@ -148,16 +195,28 @@ public class Setting  extends AppCompatActivity {
 
             }
         }
-         getProfile();
+
+
+
+        if (globalClass.iseditable){
+            onEdit();
+        }else {
+            onSave();
+        }
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nameedit.setVisibility(View.VISIBLE);
-                name.setVisibility(View.GONE);
-                editpicture.setVisibility(View.VISIBLE);
-                savebutton.setVisibility(View.VISIBLE);
-                edit.setVisibility(View.GONE);
+                onEdit();
+
+
+            }
+        });
+        upgrade_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             //   getData();
+                dialogExamCreateDate();
             }
         });
         editpicture.setOnClickListener(new View.OnClickListener() {
@@ -174,12 +233,7 @@ public class Setting  extends AppCompatActivity {
         savebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                nameedit.setVisibility(View.GONE);
-                name.setVisibility(View.VISIBLE);
-                editpicture.setVisibility(View.GONE);
-                savebutton.setVisibility(View.GONE);
-                edit.setVisibility(View.VISIBLE);
+                onSave();
                 String str_fname=edt_name.getText().toString();
                 String str_lname=edt_last.getText().toString();
                 String str_schoolName=edt_school1.getText().toString();
@@ -210,85 +264,100 @@ public class Setting  extends AppCompatActivity {
 
             }
         });
-        bck1 =  findViewById(R.id.biscuit);
+
+
         bck1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ButtonCode="#FDFFDB";
                 Utils.changeToTheme(Setting.this, Utils.THEME_DEFAULT);
-
                 sharedpreference.saveStyle(Utils.THEME_DEFAULT);
             }
         });
         white.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonCode="#FFFFFF";
 
                 Utils.changeToTheme(Setting.this, Utils.THEME_EIGHT);
-
                 sharedpreference.saveStyle(Utils.THEME_EIGHT);
+
             }
         });
 
-        bck2 = findViewById(R.id.skyblue);
+
+
         bck2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                 ButtonCode="#00BBDE";
                 Utils.changeToTheme(Setting.this, Utils.THEME_ONE);
                 sharedpreference.saveStyle(Utils.THEME_ONE);
+
                 rl_sky_blue.setBackgroundColor(Color.parseColor("#307417"));
             }
         });
 
 
-        bck3 =  findViewById(R.id.pesto);
+
+
         bck3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                     ButtonCode="#B2B669";
                 Utils.changeToTheme(Setting.this, Utils.THEME_TWO);
                 sharedpreference.saveStyle(Utils.THEME_TWO);
             }
         });
 
-        bck4 =  findViewById(R.id.fave);
+
+
         bck4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonCode="#9D0069";
                 Utils.changeToTheme(Setting.this, Utils.THEME_THREE);
                 sharedpreference.saveStyle(Utils.THEME_THREE);
             }
         });
 
-        bck5 =  findViewById(R.id.calmgreen);
+
+
         bck5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonCode="#9DD8B7";
                 Utils.changeToTheme(Setting.this, Utils.THEME_FOUR);
                 sharedpreference.saveStyle(Utils.THEME_FOUR);
             }
         });
-        bck6 =  findViewById(R.id.lightgrey);
+
+
         bck6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ButtonCode="#AEA7A6";
                 Utils.changeToTheme(Setting.this, Utils.THEME_FIVE);
                 sharedpreference.saveStyle(Utils.THEME_FIVE);
             }
         });
-        bck7 =  findViewById(R.id.pink);
+
         bck7.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                ButtonCode="#EDDFE0";
                 Utils.changeToTheme(Setting.this, Utils.THEME_SIX);
                 sharedpreference.saveStyle(Utils.THEME_SIX);
             }
         });
-        bck8 =  findViewById(R.id.lightblue);
+
+
         bck8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ButtonCode="#C2F7FE";
                 Utils.changeToTheme(Setting.this, Utils.THEME_SEVEN);
                 sharedpreference.saveStyle(Utils.THEME_SEVEN);
             }
@@ -297,7 +366,53 @@ public class Setting  extends AppCompatActivity {
 
     }
 
+    public void onEdit(){
+        globalClass.setIseditable(true);
+        nameedit.setVisibility(View.VISIBLE);
+        name.setVisibility(View.GONE);
+        editpicture.setVisibility(View.VISIBLE);
+        savebutton.setVisibility(View.VISIBLE);
+        edit.setVisibility(View.GONE);
+        edt_email.setFocusable(false);
+        edt_last.setFocusable(true);
+        edt_email.setEnabled(false);
+        bck1.setEnabled(true);
+        white.setEnabled(true);
+        bck2.setEnabled(true);
+        bck3.setEnabled(true);
+        bck4.setEnabled(true);
+        bck5.setEnabled(true);
+        bck6.setEnabled(true);
+        bck7.setEnabled(true);
+        bck8.setEnabled(true);
 
+    }
+    public void onSave(){
+        globalClass.setIseditable(false);
+        nameedit.setVisibility(View.GONE);
+        name.setVisibility(View.VISIBLE);
+        editpicture.setVisibility(View.GONE);
+        savebutton.setVisibility(View.GONE);
+        edit.setVisibility(View.VISIBLE);
+        sc_main.setEnabled(false);
+        bck1.setEnabled(false);
+        bck2.setFocusable(false);
+        bck2.setEnabled(false);
+        bck3.setFocusable(false);
+        bck3.setEnabled(false);
+        bck4.setFocusable(false);
+        bck4.setEnabled(false);
+        bck5.setFocusable(false);
+        bck5.setEnabled(false);
+        bck6.setFocusable(false);
+        bck6.setEnabled(false);
+        bck7.setFocusable(false);
+        bck7.setEnabled(false);
+        bck8.setFocusable(false);
+        bck8.setEnabled(false);
+
+
+    }
     private void Logout() {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
@@ -471,8 +586,24 @@ public class Setting  extends AppCompatActivity {
                         String res_lastname=data.get("last_name").toString().replaceAll("\"", "");
                         String res_school_name=data.get("school_name").toString().replaceAll("\"", "");
                         String profile_pic=data.get("profile_pic").toString().replaceAll("\"", "");
+                         free_space=data.get("free_space").toString().replaceAll("\"", "");
+                         used_space=data.get("used_space").toString().replaceAll("\"", "");
 
+                        result_free_space = Double.parseDouble(free_space);
+                        result_used_space=Double.parseDouble(used_space);
+                        tv_free_space.setText("Free Space :"+result_free_space);
+                        tv_used_space.setText("Used Space :"+result_used_space);
+                        List pieData = new ArrayList<>();
 
+                        pieData.add(new SliceValue((float) result_free_space, Color.BLUE));
+
+                        pieData.add(new SliceValue((float) result_used_space, Color.RED));
+
+                        PieChartData pieChartData = new PieChartData(pieData);
+                        pieChartData.setHasLabels(true).setValueLabelTextSize(14);
+                        pieChartData.setHasCenterCircle(true).setCenterText1("Storage Plan").setCenterText1FontSize(16).setCenterText1Color(Color.parseColor("#0097A7"));
+                        pieChartView.setPieChartData(pieChartData);
+                        Log.d(TAG, "result_free_space response: "+result_used_space);
                         globalClass.setId(res_user_id);
                         globalClass.setEmail(res_email);
                         globalClass.setFname(res_firstname);
@@ -807,6 +938,30 @@ public class Setting  extends AppCompatActivity {
         return cursor.getString(column_index);
     }
 
+    private void dialogExamCreateDate(){
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Setting.this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_bottom_navigation, null);
+        dialogBuilder.setView(dialogView);
+
+
+        dialogBuilder.setCancelable(false);
+
+        final AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        LinearLayout ll_close=dialogView.findViewById(R.id.ll_close);
+
+        ll_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                alertDialog.dismiss();
+            }
+        });
+
+    }
+
 
     public void updateProfile(final String fname,final String lname,final String school){
 
@@ -821,6 +976,7 @@ public class Setting  extends AppCompatActivity {
         params.put("Firstname",fname);
         params.put("Lastname", lname);
         params.put("school_name", school);
+        params.put("app_color", ButtonCode);
         try{
 
             params.put("profileImage", p_image);

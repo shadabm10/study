@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
 
     <application
@@ -28,6 +29,9 @@
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <activity android:name="com.studinotes.Activities.Login"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
@@ -66,7 +70,12 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name="com.studinotes.Activities.ViewFile"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:noHistory="true"></activity>
+        <activity android:name="com.studinotes.Activities.ActivityNotepad"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+
+          ></activity>
 
 
 

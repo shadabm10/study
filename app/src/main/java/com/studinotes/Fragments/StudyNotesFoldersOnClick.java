@@ -54,6 +54,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shashank.sony.fancytoastlib.FancyToast;
+import com.studinotes.Activities.ActivityNotepad;
 import com.studinotes.Activities.HomePage;
 import com.studinotes.Activities.Setting;
 import com.studinotes.AdapterClass.AdapterListFolder;
@@ -140,8 +141,11 @@ public class StudyNotesFoldersOnClick extends Fragment {
     Sharedpreference sharedpreference;
     String   filename1;
     String filename;
+
+    long fileSizeInBytes;
     ProgressDialog pd;
     String file_type;
+    View view1;
 
 
 
@@ -170,6 +174,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
         foldersearchList=new ArrayList<>();
          ll_main=rootView.findViewById(R.id.ll_main);
         textView=rootView.findViewById(R.id.textView);
+        view1=rootView.findViewById(R.id.view1);
          rv_main=rootView.findViewById(R.id.rv_main);
          tv_name1=rootView.findViewById(R.id.tv_name1);
          search_folder_file=rootView.findViewById(R.id.area);
@@ -265,9 +270,12 @@ public class StudyNotesFoldersOnClick extends Fragment {
                 dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog1.setContentView(R.layout.studynotesfoldersonclick_dialog);
                 Button add_image=dialog1.findViewById(R.id.add_image);
+                Button add_audio=dialog1.findViewById(R.id.add_audio);
+                Button add_other_file=dialog1.findViewById(R.id.add_other_file);
                 Button dialogButton = dialog1.findViewById(R.id.create1);
                 Button upload_doc = dialog1.findViewById(R.id.upload);
                 Button add_video = dialog1.findViewById(R.id.add_video);
+                Button add_notepad = dialog1.findViewById(R.id.add_notpad);
                 upload_doc.setOnClickListener(new Button.OnClickListener(){
 
                     @Override
@@ -280,6 +288,34 @@ public class StudyNotesFoldersOnClick extends Fragment {
                         dialog1.dismiss();
 
                     }});
+                add_audio.setOnClickListener(new Button.OnClickListener(){
+
+                    @Override
+                    public void onClick(View arg0) {
+                        // TODO Auto-generated method stub
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("audio/*");
+
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Audio"), PICK_IMAGE );
+                        dialog1.dismiss();
+
+                    }});
+                add_other_file.setOnClickListener(new Button.OnClickListener(){
+
+                    @Override
+                    public void onClick(View arg0) {
+                        // TODO Auto-generated method stub
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("*/*");
+
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Audio"), PICK_IMAGE );
+                        dialog1.dismiss();
+
+                    }});
+
+
                 add_video.setOnClickListener(new Button.OnClickListener(){
 
                     @Override
@@ -303,7 +339,17 @@ public class StudyNotesFoldersOnClick extends Fragment {
                         dialog1.dismiss();
                     }
                 });
+                add_notepad.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent notepad=new Intent(getActivity(), ActivityNotepad.class);
+                        notepad.putExtra("parent_folder_id",id);
+                        notepad.putExtra("from","add");
+                        startActivity(notepad);
+                        dialog1.dismiss();
 
+                    }
+                });
                 // if button is clicked, close the custom dialog
                 dialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -311,6 +357,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
                            dialog1.dismiss();
                         final Dialog dialog = new Dialog(getActivity());
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        dialog.setCancelable(false);
                         dialog.setContentView(R.layout.studynotes_dialog);
                         final Button yes,no,mustard,navy,black,darkgrey,terracotta,light_blue,dark_green,
                                 light_green,orange,purple,red;
@@ -592,7 +639,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Uri uri = new Uri.Builder().build();
-        if (resultCode == RESULT_OK) {
+        if ( resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case PICKFILE_REQUEST_CODE: {
                     String path = new File(data.getData().getPath()).getAbsolutePath();
@@ -604,56 +651,72 @@ public class StudyNotesFoldersOnClick extends Fragment {
 
                         try {
                             imageFile = new File(getFilePath(getActivity(),uri));
+                             fileSizeInBytes = imageFile.length();
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
                         Log.d(TAG, "onActivityResult: "+imageFile);
-                       Log.d(TAG, "onActivityResult: "+path1);
+                        Log.d(TAG, "onActivityResult 2: "+imageFile.getName());
+                        Log.d(TAG, "onActivityResult 3: "+imageFile.canExecute());
+                       Log.d(TAG, "onActivityResult: "+fileSizeInBytes);
 
-                        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-                        if (cursor == null) { // Source is Dropbox or other similar local file path
-                            filename = uri.getPath();
-                        } else {
-                            cursor.moveToFirst();
-                            int idx = cursor.getColumnIndex(MediaStore.Files.FileColumns.DISPLAY_NAME);
-                            filename = cursor.getString(idx);
-                            cursor.close();
+
+                       filename=imageFile.getName();
+
+                       if (filename.contains(".")){
+                            filename1  = filename.substring(0, filename.lastIndexOf("."));
+                        }else {
+                            filename1  = filename;
                         }
+                        String extension;
 
-                    filename1  = filename.substring(0, filename.lastIndexOf("."));
 
-                        String extension = filename.substring(filename.lastIndexOf(".") + 1);
-                         extension_withdot = filename.substring(filename.lastIndexOf(".") );
+                        extension = filename.substring(filename.lastIndexOf(".") + 1);
+                        extension_withdot = filename.substring(filename.lastIndexOf(".") );
+
+
                         Log.d(TAG, "onActivityResult: "+extension);
-                        Log.d(TAG, "filename: "+filename1);
-                        Log.d(TAG, "filename: "+extension_withdot);
+                        Log.d(TAG, "filename2: "+filename1);
+                        Log.d(TAG, "filename1: "+extension_withdot);
                         if(extension.equals("jpeg")||(extension.equals("jpg"))||(extension.equals("png"))){
-                            file_type="image";
+                            file_type="IMAGE";
                         }
                         else if(extension.equals("doc")){
-                            file_type="MSWord";
+                            file_type="Microsoft Word";
+                        }
+                        else if(extension.equals("docx")){
+                            file_type="Microsoft Word";
                         }
                         else if(extension.equals("pdf")){
-                            file_type="pdf";
+                            file_type="PDF";
                         }
-                        else if(extension.equals("ppt")){
-                            file_type="powerpoint";
+                        else if(extension.equals("ppt")||extension.equals("pptx")){
+                            file_type="Microsoft Powerpoint";
                         }
                         else if(extension.equals("flv"))
                         {
-                            file_type="video";
+                            file_type="VIDEO";
                         }
                         else if(extension.equals("mov")){
-                            file_type="video";
+                            file_type="VIDEO";
                         }
                         else if(extension.equals("mp4")){
-                            file_type="video";
+                            file_type="VIDEO";
                         }
                         else if(extension.equals("wmv")){
-                            file_type="video";
+                            file_type="VIDEO";
                         }
                         else if(extension.equals("avi")){
-                            file_type="video";
+                            file_type="VIDEO";
+                        }
+                        else if(extension.equals("mp3")){
+                            file_type="AUDIO";
+                        }
+                        else if(extension.equals("wav")){
+                            file_type="AUDIO";
+                        }
+                        else if(extension.equals("xls")||extension.equals("xlsx")){
+                            file_type="Microsoft Excel";
                         }
                         CustomDialog();
                     }
@@ -738,6 +801,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
     public void CustomDialog(){
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
         dialog.setContentView(R.layout.custom_dialog);
 
 
@@ -781,6 +845,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
         params.put("folder_id", id);
         params.put("file_type", file_type);
         params.put("file_name", reason+extension_withdot);
+        params.put("file_size", fileSizeInBytes);
 
 
         try {
@@ -1034,6 +1099,14 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
                     if (result.equals("1")) {
                         JsonArray product=jobj.getAsJsonArray("folderData");
                         JsonArray fileData=jobj.getAsJsonArray("fileData");
+                        if(product.size()>0) {
+                            tv_name1.setText("FOLDER");
+                            view1.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            tv_name1.setText("");
+                            view1.setVisibility(View.GONE);
+                        }
 
                         for (int i = 0; i < product.size(); i++) {
                             JsonObject images1 = product.get(i).getAsJsonObject();
@@ -1217,10 +1290,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
 
         }
 
-
-
     }
-
 
     public View getMainView(HashMap<String, String> hashMap){
 
@@ -1239,7 +1309,7 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
         Log.d(TAG, "list = " + getListFromJson(hashMap.get("file")));
         Log.d(TAG, "list size = " + getListFromJson(hashMap.get("file")).size());
 
-        adapterWord = new AdapterWord(getListFromJson(hashMap.get("file")),getActivity(),pd,fragmentManager,StudyNotesFoldersOnClick.this);
+        adapterWord = new AdapterWord(getListFromJson(hashMap.get("file")),getActivity(),pd,fragmentManager,StudyNotesFoldersOnClick.this,id);
         dynamic_recycler.setAdapter(adapterWord);
         adapterWord.notifyDataSetChanged();
 

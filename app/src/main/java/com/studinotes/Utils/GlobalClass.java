@@ -23,6 +23,16 @@ public class GlobalClass extends Application {
 
     public Boolean login_status = false;
 
+    public Boolean getIseditable() {
+        return iseditable;
+    }
+
+    public void setIseditable(Boolean iseditable) {
+        this.iseditable = iseditable;
+    }
+
+    public Boolean iseditable=false;
+
     private static GlobalClass mInstance;
 
     String id;

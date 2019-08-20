@@ -50,11 +50,11 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
     LayoutInflater inflater;
     Assessment assessment_ass;
     String notify_date_time,date_notify_exam,time_notify,assess_notify,access_date,str_id;
-    String str_assess_name,id,str_asses_subject_name,str_asses_date,str_asses_time,str_asses_details,str_asses_notify;
+    String str_assess_name,id,str_asses_subject_name,str_asses_date,str_asses_time,ass_datetime,str_asses_details,str_asses_notify;
     Calendar myCalendar = Calendar.getInstance();
     GlobalClass globalClass;
     private int mYear, mMonth, mDay, mHour, mMinute,mSecond;
-    EditText accessdate, accesstime, notify5, notify6,asses_name,subjectname_assess,access_details;
+    EditText accessdate,time, accesstime, notify5, notify6,asses_name,subjectname_assess,access_details;
 
     public Assessment_adapter1(Context context, ArrayList<HashMap<String, String>> assessment,Assessment assessment_ass,ProgressDialog pd) {
 
@@ -138,7 +138,7 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
                                 // if this button is clicked, close
                                 // current activity
 
-                                DeleteFolder();
+                                DeleteFolder(assessment.get(getAdapterPosition()).get("id"));
                             }
                         })
                         .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -161,7 +161,7 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
         }
     }
 
-    private void DeleteFolder() {
+    private void DeleteFolder(String id) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -271,6 +271,7 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
         notify5 = dialogView.findViewById(R.id.notify5);
         notify6 = dialogView.findViewById(R.id.notify6);
         access_details = dialogView.findViewById(R.id.access_details);
+        time=dialogView.findViewById(R.id.time);
         /*   Setting the values */
         asses_name.setText(str_assess_name);
         access_details.setText(str_asses_details);
@@ -296,7 +297,18 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
 
         });
 
-        clock1.setOnClickListener(v -> timePicker2());
+        clock1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePicker2();
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                new DatePickerDialog(context, datePickerListener4, mYear, mMonth, mDay).show();
+            }
+        });
 
         bell3.setOnClickListener(v -> {
 
@@ -363,6 +375,25 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
         btn_no1.setOnClickListener(v -> alertDialog.dismiss());
 
     }
+    private DatePickerDialog.OnDateSetListener datePickerListener4 =
+            new DatePickerDialog.OnDateSetListener() {
+
+                public void onDateSet(DatePicker view, int selectedYear,
+                                      int selectedMonth, int selectedDay) {
+                    myCalendar.set(Calendar.YEAR, selectedYear);
+                    myCalendar.set(Calendar.MONTH, selectedMonth);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+                    String myFormat = "MMM dd, yyyy";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    ass_datetime = sdf1.format(myCalendar.getTime());
+                    String date_to_show = sdf.format(myCalendar.getTime());
+                    time.setText(ass_datetime);
+
+                    //notify5.setText(date);
+
+                }
+            };
 
 
 
@@ -409,16 +440,25 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
-        mSecond =c.get(Calendar.SECOND);
 
         // Launch Time Picker Dialog
-        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(context, (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
+      /*  MyTimePickerDialog mTimePicker = new MyTimePickerDialog(context, (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
             // TODO Auto-generated method stub
             assess_notify= String.format("%02d", hourOfDay)+
                     ":" + String.format("%02d", minute) +
-                    ":" + String.format("%02d", seconds);
+                    "" ;
             accesstime.setText(assess_notify);
         }, mHour, mMinute, mSecond, true);
+        mTimePicker.show();*/
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                accesstime.setText( ""+selectedHour + ":" + selectedMinute);
+            }
+        }, mHour, mMinute,true);
+
         mTimePicker.show();
     }
 
@@ -429,13 +469,23 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
         mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
-        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(context, (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
+        /*MyTimePickerDialog mTimePicker = new MyTimePickerDialog(context, (MyTimePickerDialog.OnTimeSetListener) (view, hourOfDay, minute, seconds) -> {
             // TODO Auto-generated method stub
             time_notify= String.format("%02d", hourOfDay)+
                     ":" + String.format("%02d", minute) +
                     ":" + String.format("%02d", seconds);
             notify6.setText(time_notify);
         }, mHour, mMinute, mSecond, true);
+        mTimePicker.show();*/
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                notify6.setText( ""+selectedHour + ":" + selectedMinute);
+            }
+        }, mHour, mMinute,true);
+
         mTimePicker.show();
     }
     private void EditAsses()
@@ -513,7 +563,7 @@ public class Assessment_adapter1 extends RecyclerView.Adapter<Assessment_adapter
                 params.put("ass_id",str_id);
                 params.put("ass_name",asses_name.getText().toString().trim());
                 params.put("ass_date",accessdate.getText().toString().trim());
-                params.put("ass_time",time_notify);
+                params.put("ass_time",accesstime.getText().toString().trim());
                 params.put("ass_subject",subjectname_assess.getText().toString().trim());
 
 

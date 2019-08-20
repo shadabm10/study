@@ -162,7 +162,7 @@ public class Register extends AppCompatActivity {
                         globalClass.setFcm_reg_token(fcm_token);
 
                         globalClass.setSchool_name(res_school_name);
-                        globalClass.setLogin_status(true);
+                        globalClass.setLogin_status(false);
 
                         prefrence.savePrefrence();
 

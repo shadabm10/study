@@ -14,15 +14,15 @@
         android:src="@mipmap/folderblue"
 
 
-
         />
+
     <TextView
         android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Folder"
         android:textColor="@android:color/black"
-        android:layout_gravity="center"
         android:textStyle="bold"
 
         />

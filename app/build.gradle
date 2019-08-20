@@ -45,5 +45,12 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-hls:r2.4.0'
     implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:r2.4.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
+    implementation 'com.aromajoin.library:actionsheet:0.0.2'
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation project(path: ':doodle')
+
+    implementation ('cn.hzw.imageselector:library:1.0'){
+        transitive = false
+    }
 }

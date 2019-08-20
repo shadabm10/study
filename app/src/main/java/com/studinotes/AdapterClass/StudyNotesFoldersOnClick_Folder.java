@@ -186,13 +186,13 @@ public class StudyNotesFoldersOnClick_Folder extends RecyclerView.Adapter<StudyN
 
                     // set dialog message
                     alertDialogBuilder
-                            .setMessage("Want to delete the folder")
+                            .setMessage("Do you want to delete this folder? ")
                             .setCancelable(false)
                             .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
                                     // if this button is clicked, close
                                     // current activity
-                                    DeleteFolder();
+                                    DeleteFolder(folderList.get(getAdapterPosition()).get("id"));
                                 }
                             })
                             .setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -217,7 +217,7 @@ public class StudyNotesFoldersOnClick_Folder extends RecyclerView.Adapter<StudyN
         }
 
     }
-    private void DeleteFolder() {
+    private void DeleteFolder(String id) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 

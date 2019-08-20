@@ -5,8 +5,10 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@android:color/white"
 
     >
 
@@ -15,8 +17,9 @@
         android:layout_width="250dp"
          android:paddingTop="10dp"
         android:paddingBottom="10dp"
+        android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
+
         android:background="@drawable/allcurve_white"
 
 
@@ -75,7 +78,66 @@
         android:text="@string/open"
         android:textColor="@android:color/black"
         />
-</RelativeLayout>
+        <Button
+            android:id="@+id/add_audio"
+            android:layout_below="@id/add_video"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/cancel_button"
+            android:clickable="true"
+            android:text="@string/add_audio"
+            android:textColor="@android:color/black"
+            />
+
+        <Button
+            android:id="@+id/add_other_file"
+            android:layout_below="@id/add_audio"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/cancel_button"
+            android:clickable="true"
+            android:text="@string/add_other_files"
+            android:textColor="@android:color/black"
+            />
+        <Button
+            android:id="@+id/add_notpad"
+            android:layout_below="@id/add_other_file"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/cancel_button"
+            android:clickable="true"
+            android:text="@string/add_notepad"
+            android:textColor="@android:color/black"
+            />
+        <Button
+            android:id="@+id/add_drawingpad"
+            android:layout_below="@id/add_notpad"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/cancel_button"
+            android:clickable="true"
+            android:text="@string/add_drawingpad"
+            android:textColor="@android:color/black"
+            />
+
+
+    </RelativeLayout>
 
 
 
