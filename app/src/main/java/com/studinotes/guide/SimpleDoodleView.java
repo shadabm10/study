@@ -15,8 +15,7 @@ import java.util.List;
 import cn.forward.androids.TouchGestureDetector;
 
 /**
- * 初级涂鸦
- * 没有图片 仅支持 手绘
+
  * Created on 24/06/2018.
  */
 public class SimpleDoodleView extends View {
@@ -24,10 +23,10 @@ public class SimpleDoodleView extends View {
     private final static String TAG = "SimpleDoodleView";
 
     private Paint mPaint = new Paint();
-    private List<Path> mPathList = new ArrayList<>(); // 保存涂鸦轨迹的集合
-    private TouchGestureDetector mTouchGestureDetector; // 触摸手势监听
+    private List<Path> mPathList = new ArrayList<>(); //
+    private TouchGestureDetector mTouchGestureDetector; //
     private float mLastX, mLastY;
-    private Path mCurrentPath; // 当前的涂鸦轨迹
+    private Path mCurrentPath; //
 
     public SimpleDoodleView(Context context) {
         super(context);
@@ -42,14 +41,14 @@ public class SimpleDoodleView extends View {
         mTouchGestureDetector = new TouchGestureDetector(getContext(), new TouchGestureDetector.OnTouchGestureListener() {
 
             @Override
-            public void onScrollBegin(MotionEvent e) { // 滑动开始
+            public void onScrollBegin(MotionEvent e) { //
                 Log.d(TAG, "onScrollBegin: ");
-                mCurrentPath = new Path(); // 新的涂鸦
-                mPathList.add(mCurrentPath); // 添加的集合中
+                mCurrentPath = new Path(); //
+                mPathList.add(mCurrentPath); //
                 mCurrentPath.moveTo(e.getX(), e.getY());
                 mLastX = e.getX();
                 mLastY = e.getY();
-                invalidate(); // 刷新
+                invalidate(); //
             }
 
             @Override
@@ -59,23 +58,23 @@ public class SimpleDoodleView extends View {
                         mLastX,
                         mLastY,
                         (e2.getX() + mLastX) / 2,
-                        (e2.getY() + mLastY) / 2); // 使用贝塞尔曲线 让涂鸦轨迹更圆滑
+                        (e2.getY() + mLastY) / 2); //
                 mLastX = e2.getX();
                 mLastY = e2.getY();
-                invalidate(); // 刷新
+                invalidate(); //
                 return true;
             }
 
             @Override
-            public void onScrollEnd(MotionEvent e) { // 滑动结束
+            public void onScrollEnd(MotionEvent e) { //
                 Log.d(TAG, "onScrollEnd: ");
                 mCurrentPath.quadTo(
                         mLastX,
                         mLastY,
                         (e.getX() + mLastX) / 2,
-                        (e.getY() + mLastY) / 2); // 使用贝塞尔曲线 让涂鸦轨迹更圆滑
-                mCurrentPath = null; // 轨迹结束
-                invalidate(); // 刷新
+                        (e.getY() + mLastY) / 2); //
+                mCurrentPath = null; //
+                invalidate(); //
             }
 
         });
@@ -83,7 +82,7 @@ public class SimpleDoodleView extends View {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        boolean consumed = mTouchGestureDetector.onTouchEvent(event); // 由手势识别器处理手势
+        boolean consumed = mTouchGestureDetector.onTouchEvent(event); //
         if (!consumed) {
             return super.dispatchTouchEvent(event);
         }
@@ -92,7 +91,7 @@ public class SimpleDoodleView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for (Path path : mPathList) { // 绘制涂鸦轨迹
+        for (Path path : mPathList) { //
             canvas.drawPath(path, mPaint);
         }
     }

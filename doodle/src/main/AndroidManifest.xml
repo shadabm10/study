@@ -24,6 +24,7 @@
     <application
             >
         <activity android:name=".DoodleActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:configChanges="screenSize|orientation|keyboardHidden|navigation|keyboard"
             />
     </application>

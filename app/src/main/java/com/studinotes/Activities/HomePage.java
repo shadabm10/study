@@ -1,8 +1,13 @@
 package com.studinotes.Activities;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -11,8 +16,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
-
+import android.widget.Toast;
 
 
 import com.studinotes.AdapterClass.R;
@@ -20,16 +27,24 @@ import com.studinotes.Fragments.Assessment;
 import com.studinotes.Fragments.StudyNotes;
 import com.studinotes.Fragments.TimeManagement;
 import com.studinotes.Fragments.TipsnTricks;
+import com.studinotes.MainActivity;
 import com.studinotes.Utils.GlobalClass;
 
-public class HomePage extends AppCompatActivity {
+import java.io.File;
 
+import cn.hzw.doodle.DoodleActivity;
+import cn.hzw.doodle.DoodleParams;
+import cn.hzw.doodle.DoodleView;
+
+public class HomePage extends AppCompatActivity {
+     String TAG="Homepage";
     private Toolbar mToolbar;
     GlobalClass global_class;
     Fragment fragment;
     boolean doubleBackToExitPressedOnce = false;
     BottomNavigationView bottomNavigationView;
-
+    public static final int REQ_CODE_SELECT_IMAGE = 100;
+    public static final int REQ_CODE_DOODLE = 101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,6 +232,36 @@ public class HomePage extends AppCompatActivity {
         fragmentManager2.beginTransaction().replace(R.id.contentContainer, fragment).commit();
        // fragmentManager2.addT
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult: "+requestCode );
+        Log.d(TAG, "onActivityResult: "+resultCode );
+        Log.d(TAG, "onActivityResult: "+data );
+        if (requestCode == REQ_CODE_SELECT_IMAGE) {
+            if (data == null) {
+                return;
+            }
+
+
+
+        } else if (requestCode == REQ_CODE_DOODLE) {
+            if (data == null) {
+                return;
+            }
+            if (resultCode == DoodleActivity.RESULT_OK) {
+                String path = data.getStringExtra(DoodleActivity.KEY_IMAGE_PATH);
+                Log.d(TAG, "onActivityResult: "+path);
+                if (TextUtils.isEmpty(path)) {
+                    return;
+                }
+                //  ImageLoader.getInstance(this).display(findViewById(R.id.img), path);
+               // mPath.setText(path);
+            } else if (resultCode == DoodleActivity.RESULT_ERROR) {
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

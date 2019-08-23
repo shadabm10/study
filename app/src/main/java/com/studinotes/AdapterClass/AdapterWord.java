@@ -108,6 +108,9 @@ public void onBindViewHolder(AdapterWord.PlanetViewHolder holder, final int posi
         holder.image.setImageResource(R.mipmap.document);
     }else if(videoList.get(position).get("file_type_inner").equals("NotePad")){
         holder.image.setImageResource(R.mipmap.icn_notes);
+    }else if(videoList.get(position).get("file_type_inner").equals("DrawingPad")){
+        Picasso.with(context).load(videoList.get(position).get("file_url")).into(holder.image);
+
     }
 
     holder.text.setText(videoList.get(position).get("file_name"));
@@ -135,6 +138,9 @@ public void onBindViewHolder(AdapterWord.PlanetViewHolder holder, final int posi
               Intent intent = new Intent(context, ViewFile.class);
               intent.putExtra("file_url", videoList.get(position).get("file_url"));
               intent.putExtra("file_type_inner", videoList.get(position).get("file_type_inner"));
+              intent.putExtra("from", "edit_file");
+              intent.putExtra("file_id", id);
+
               // startActivity(intent);
               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

@@ -31,7 +31,9 @@ import cn.hzw.doodle.DoodleActivity;
 import cn.hzw.doodle.DoodleParams;
 import cn.hzw.doodle.DoodleView;
 
-import cn.hzw.imageselector.ImageLoader;
+
+
+import static cn.hzw.doodle.DoodleActivity.KEY_PARAMS;
 
 public class MainActivity extends Activity {
 
@@ -64,36 +66,64 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
               // ImageSelectorActivity.startActivityForResult(REQ_CODE_SELECT_IMAGE, MainActivity.this, null, false);
 
+/*
 
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_SELECT_IMAGE);
+*/
 
               /*  Intent doodle_ac=new Intent(MainActivity.this,DoodleActivity.class);
                startActivity(doodle_ac);*/
+
+
+
+
+                DoodleParams params = new DoodleParams();
+                params.mIsFullScreen = true;
+                // 图片路径
+                params.mImagePath = null;
+                // 初始画笔大小
+                params.mPaintUnitSize = DoodleView.DEFAULT_SIZE;
+                // 画笔颜色
+                params.mPaintColor = Color.RED;
+                // 是否支持缩放item
+                params.mSupportScaleItem = true;
+
+                Intent intent1 = new Intent(MainActivity.this, DoodleActivity.class);
+                intent1.putExtra(KEY_PARAMS, params);
+                startActivity(intent1);
+
+
             }
         });
 
+/*
         findViewById(R.id.btn_guide).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), DoodleGuideActivity.class));
             }
         });
+*/
 
+/*
         findViewById(R.id.btn_mosaic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MosaicDemo.class));
             }
         });
+*/
+/*
         findViewById(R.id.btn_scale_gesture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), ScaleGestureItemDemo.class));
             }
         });
+*/
         mPath = (TextView) findViewById(R.id.img_path);
     }
     public boolean checkForPermission(final String[] permissions, final int permRequestCode) {
@@ -182,7 +212,7 @@ public class MainActivity extends Activity {
                 if (TextUtils.isEmpty(path)) {
                     return;
                 }
-                ImageLoader.getInstance(this).display(findViewById(R.id.img), path);
+              //  ImageLoader.getInstance(this).display(findViewById(R.id.img), path);
                 mPath.setText(path);
             } else if (resultCode == DoodleActivity.RESULT_ERROR) {
                 Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();

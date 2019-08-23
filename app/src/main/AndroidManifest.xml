@@ -77,7 +77,14 @@
 
           ></activity>
 
-
+        <activity android:name="com.studinotes.MainActivity"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.studinotes.MosaicDemo"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.studinotes.guide.DoodleGuideActivity"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="com.studinotes.ScaleGestureItemDemo"
+            android:theme="@android:style/Theme.NoTitleBar"/>
 
 
 

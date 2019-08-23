@@ -15,6 +15,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/doodle_select_image" />
+    <Button
+        android:id="@+id/btn_img"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/select_image" />
 
     <TextView
         android:id="@+id/img_path"
@@ -28,6 +34,7 @@
         android:textColor="#ffffff"
         android:textSize="12dp" />
 
+<!--
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,14 +55,18 @@
             android:textColor="#ffffff"
             android:textSize="16dp" />
     </LinearLayout>
+-->
 
+<!--
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/txt_demoe"
-        android:layout_below="@id/btn_select_image" />
 
+        android:layout_below="@id/btn_select_image" />
+-->
+
+<!--
     <TextView
         android:id="@+id/txt_demoe"
         android:layout_width="wrap_content"
@@ -67,7 +78,9 @@
         android:text="Demo"
         android:textColor="#888888"
         android:textSize="16dp" />
+-->
 
+<!--
     <LinearLayout
         android:id="@+id/demo"
         android:layout_width="match_parent"
@@ -92,4 +105,5 @@
             android:layout_height="wrap_content"
             android:text="@string/scale_gesture_item" />
     </LinearLayout>
+-->
 </RelativeLayout>

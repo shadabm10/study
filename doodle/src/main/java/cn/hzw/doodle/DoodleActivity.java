@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -123,6 +125,7 @@ public class DoodleActivity extends Activity {
     private View mBtnUndo;
     private View mMosaicMenu;
     private View mEditBtn;
+    private String from;
 
     private AlphaAnimation mViewShowAnimation, mViewHideAnimation; // view隐藏和显示时用到的渐变动画
 
@@ -140,6 +143,7 @@ public class DoodleActivity extends Activity {
 
     private int mMosaicLevel = -1;
 
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -155,33 +159,48 @@ public class DoodleActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+         from=getIntent().getStringExtra("from");
         StatusBarUtil.setStatusBarTranslucent(this, true, false);
         if (mDoodleParams == null) {
             mDoodleParams = getIntent().getExtras().getParcelable(KEY_PARAMS);
+
         }
-        if (mDoodleParams == null) {
+       /* if (mDoodleParams == null) {
             LogUtil.e("TAG", "mDoodleParams is null!");
             this.finish();
             return;
         }
-
+        Log.d(TAG, "onCreate: "+mDoodleParams);
         mImagePath = mDoodleParams.mImagePath;
         if (mImagePath == null) {
             LogUtil.e("TAG", "mImagePath is null!");
             this.finish();
             return;
         }
-
-        LogUtil.d("TAG", mImagePath);
+*/
+        //LogUtil.d("TAG", mImagePath);
         if (mDoodleParams.mIsFullScreen) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        Bitmap bitmap = ImageUtils.createBitmapFromPath(mImagePath, this);
+       /* Bitmap bitmap = ImageUtils.createBitmapFromPath(mImagePath, this);
         if (bitmap == null) {
             LogUtil.e("TAG", "bitmap is null!");
             this.finish();
             return;
-        }
+        }*/
+        Bitmap bitmap=null;
+
+       if(from.equals("new_file")){
+          bitmap  = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                   R.drawable.grey_bg);
+       }
+       else if(from.equals("edit_file")){
+           mImagePath = mDoodleParams.mImagePath;
+            bitmap = ImageUtils.createBitmapFromPath(mImagePath, this);
+       }
+
+       // Bitmap bitmap = null;
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.doodle_layout);
@@ -224,6 +243,8 @@ public class DoodleActivity extends Activity {
                     ImageUtils.addImage(getContentResolver(), file.getAbsolutePath());
                     Intent intent = new Intent();
                     intent.putExtra(KEY_IMAGE_PATH, file.getAbsolutePath());
+                    Log.d(TAG, "onSaved: "+ file.getAbsolutePath());
+
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 } catch (Exception e) {
@@ -622,6 +643,7 @@ public class DoodleActivity extends Activity {
             }
         } else if (v.getId() == R.id.doodle_btn_finish) {
             mDoodle.save();
+
         } else if (v.getId() == R.id.doodle_btn_back) {
             if (mDoodle.getAllItem() == null || mDoodle.getItemCount() == 0) {
                 finish();

@@ -18,8 +18,7 @@ import cn.forward.androids.ScaleGestureDetectorApi27;
 import cn.forward.androids.TouchGestureDetector;
 
 /**
- * 高级涂鸦
- * 支持对图片涂鸦, 可移动缩放图片
+ *
  * Created on 24/06/2018.
  */
 public class AdvancedDoodleView extends View {
@@ -27,11 +26,11 @@ public class AdvancedDoodleView extends View {
     private final static String TAG = "AdvancedDoodleView";
 
     private Paint mPaint = new Paint();
-    private List<PathItem> mPathList = new ArrayList<>(); // 保存涂鸦轨迹的集合
-    private TouchGestureDetector mTouchGestureDetector; // 触摸手势监听
+    private List<PathItem> mPathList = new ArrayList<>(); //
+    private TouchGestureDetector mTouchGestureDetector; //
     private float mLastX, mLastY;
-    private PathItem mCurrentPathItem; // 当前的涂鸦轨迹
-    private PathItem mSelectedPathItem; // 选中的涂鸦轨迹
+    private PathItem mCurrentPathItem; //
+    private PathItem mSelectedPathItem; //
 
     private Bitmap mBitmap;
     private float mBitmapTransX, mBitmapTransY, mBitmapScale = 1;
@@ -40,19 +39,19 @@ public class AdvancedDoodleView extends View {
         super(context);
         mBitmap = bitmap;
 
-        // 设置画笔
+        //
         mPaint.setColor(Color.RED);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(20);
         mPaint.setAntiAlias(true);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        // 由手势识别器处理手势
+        //
         mTouchGestureDetector = new TouchGestureDetector(getContext(), new TouchGestureDetector.OnTouchGestureListener() {
 
             RectF mRectF = new RectF();
 
-            // 缩放手势操作相关
+            //
             Float mLastFocusX;
             Float mLastFocusY;
             float mTouchCentreX, mTouchCentreY;
@@ -71,13 +70,13 @@ public class AdvancedDoodleView extends View {
             }
 
             @Override
-            public boolean onScale(ScaleGestureDetectorApi27 detector) { // 双指缩放中
+            public boolean onScale(ScaleGestureDetectorApi27 detector) { //
                 Log.d(TAG, "onScale: ");
                 // 屏幕上的焦点
                 mTouchCentreX = detector.getFocusX();
                 mTouchCentreY = detector.getFocusY();
 
-                if (mLastFocusX != null && mLastFocusY != null) { // 焦点改变
+                if (mLastFocusX != null && mLastFocusY != null) { //
                     float dx = mTouchCentreX - mLastFocusX;
                     float dy = mTouchCentreY - mLastFocusY;
                     // 移动图片
@@ -99,19 +98,19 @@ public class AdvancedDoodleView extends View {
             }
 
             @Override
-            public boolean onSingleTapUp(MotionEvent e) { // 单击选中
+            public boolean onSingleTapUp(MotionEvent e) { //
                 float x = toX(e.getX()), y = toY(e.getY());
                 boolean found = false;
-                for (PathItem path : mPathList) { // 绘制涂鸦轨迹
-                    path.mPath.computeBounds(mRectF, true); // 计算涂鸦轨迹的矩形范围
-                    mRectF.offset(path.mX, path.mY); // 加上偏移
-                    if (mRectF.contains(x, y)) { // 判断是否点中涂鸦轨迹的矩形范围内
+                for (PathItem path : mPathList) { //
+                    path.mPath.computeBounds(mRectF, true); //
+                    mRectF.offset(path.mX, path.mY); //
+                    if (mRectF.contains(x, y)) { //
                         found = true;
                         mSelectedPathItem = path;
                         break;
                     }
                 }
-                if (!found) { // 没有点中任何涂鸦
+                if (!found) { //
                     mSelectedPathItem = null;
                 }
                 invalidate();
@@ -119,41 +118,41 @@ public class AdvancedDoodleView extends View {
             }
 
             @Override
-            public void onScrollBegin(MotionEvent e) { // 滑动开始
+            public void onScrollBegin(MotionEvent e) { //
                 Log.d(TAG, "onScrollBegin: ");
                 float x = toX(e.getX()), y = toY(e.getY());
                 if (mSelectedPathItem == null) {
-                    mCurrentPathItem = new PathItem(); // 新的涂鸦
-                    mPathList.add(mCurrentPathItem); // 添加的集合中
+                    mCurrentPathItem = new PathItem(); //
+                    mPathList.add(mCurrentPathItem); //
                     mCurrentPathItem.mPath.moveTo(x, y);
                 }
                 mLastX = x;
                 mLastY = y;
-                invalidate(); // 刷新
+                invalidate(); //
             }
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { // 滑动中
                 Log.d(TAG, "onScroll: " + e2.getX() + " " + e2.getY());
                 float x = toX(e2.getX()), y = toY(e2.getY());
-                if (mSelectedPathItem == null) { // 没有选中的涂鸦
+                if (mSelectedPathItem == null) { //
                     mCurrentPathItem.mPath.quadTo(
                             mLastX,
                             mLastY,
                             (x + mLastX) / 2,
-                            (y + mLastY) / 2); // 使用贝塞尔曲线 让涂鸦轨迹更圆滑
-                } else { // 移动选中的涂鸦
+                            (y + mLastY) / 2); //
+                } else { //
                     mSelectedPathItem.mX = mSelectedPathItem.mX + x - mLastX;
                     mSelectedPathItem.mY = mSelectedPathItem.mY + y - mLastY;
                 }
                 mLastX = x;
                 mLastY = y;
-                invalidate(); // 刷新
+                invalidate(); //
                 return true;
             }
 
             @Override
-            public void onScrollEnd(MotionEvent e) { // 滑动结束
+            public void onScrollEnd(MotionEvent e) { //
                 Log.d(TAG, "onScrollEnd: ");
                 float x = toX(e.getX()), y = toY(e.getY());
                 if (mSelectedPathItem == null) {
@@ -161,31 +160,31 @@ public class AdvancedDoodleView extends View {
                             mLastX,
                             mLastY,
                             (x + mLastX) / 2,
-                            (y + mLastY) / 2); // 使用贝塞尔曲线 让涂鸦轨迹更圆滑
-                    mCurrentPathItem = null; // 轨迹结束
+                            (y + mLastY) / 2); //
+                    mCurrentPathItem = null; //
                 }
-                invalidate(); // 刷新
+                invalidate(); //
             }
 
         });
 
-        // 针对涂鸦的手势参数设置
-        // 下面两行绘画场景下应该设置间距为大于等于1，否则设为0双指缩放后抬起其中一个手指仍然可以移动
-        mTouchGestureDetector.setScaleSpanSlop(1); // 手势前识别为缩放手势的双指滑动最小距离值
-        mTouchGestureDetector.setScaleMinSpan(1); // 缩放过程中识别为缩放手势的双指最小距离值
+        //
+        //
+        mTouchGestureDetector.setScaleSpanSlop(1); //
+        mTouchGestureDetector.setScaleMinSpan(1); //
         mTouchGestureDetector.setIsLongpressEnabled(false);
         mTouchGestureDetector.setIsScrollAfterScaled(false);
     }
 
     @Override
-    protected void onSizeChanged(int width, int height, int oldw, int oldh) { //view绘制完成时 大小确定
+    protected void onSizeChanged(int width, int height, int oldw, int oldh) { //view
         super.onSizeChanged(width, height, oldw, oldh);
         int w = mBitmap.getWidth();
         int h = mBitmap.getHeight();
         float nw = w * 1f / getWidth();
         float nh = h * 1f / getHeight();
         float centerWidth, centerHeight;
-        // 1.计算使图片居中的缩放值
+        //
         if (nw > nh) {
             mBitmapScale = 1 / nw;
             centerWidth = getWidth();
@@ -195,21 +194,21 @@ public class AdvancedDoodleView extends View {
             centerWidth = (int) (w * mBitmapScale);
             centerHeight = getHeight();
         }
-        // 2.计算使图片居中的偏移值
+        //
         mBitmapTransX = (getWidth() - centerWidth) / 2f;
         mBitmapTransY = (getHeight() - centerHeight) / 2f;
         invalidate();
     }
 
     /**
-     * 将屏幕触摸坐标x转换成在图片中的坐标
+     *
      */
     public final float toX(float touchX) {
         return (touchX - mBitmapTransX) / mBitmapScale;
     }
 
     /**
-     * 将屏幕触摸坐标y转换成在图片中的坐标
+     *
      */
     public final float toY(float touchY) {
         return (touchY - mBitmapTransY) / mBitmapScale;
@@ -218,7 +217,7 @@ public class AdvancedDoodleView extends View {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        boolean consumed = mTouchGestureDetector.onTouchEvent(event); // 由手势识别器处理手势
+        boolean consumed = mTouchGestureDetector.onTouchEvent(event); //
         if (!consumed) {
             return super.dispatchTouchEvent(event);
         }
@@ -227,20 +226,19 @@ public class AdvancedDoodleView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // 画布和图片共用一个坐标系，只需要处理屏幕坐标系到图片（画布）坐标系的映射关系(toX toY)
         canvas.translate(mBitmapTransX, mBitmapTransY);
         canvas.scale(mBitmapScale, mBitmapScale);
 
-        // 绘制图片
+        //
         canvas.drawBitmap(mBitmap, 0, 0, null);
 
-        for (PathItem path : mPathList) { // 绘制涂鸦轨迹
+        for (PathItem path : mPathList) { //
             canvas.save();
             canvas.translate(path.mX, path.mY);
             if (mSelectedPathItem == path) {
-                mPaint.setColor(Color.YELLOW); // 点中的为黄色
+                mPaint.setColor(Color.YELLOW); //
             } else {
-                mPaint.setColor(Color.RED); // 其他为红色
+                mPaint.setColor(Color.RED); //
             }
             canvas.drawPath(path.mPath, mPaint);
             canvas.restore();
@@ -251,7 +249,7 @@ public class AdvancedDoodleView extends View {
      *
      */
     private static class PathItem {
-        Path mPath = new Path(); // 涂鸦轨迹
-        float mX, mY; // 轨迹偏移值
+        Path mPath = new Path(); //
+        float mX, mY; //
     }
 }

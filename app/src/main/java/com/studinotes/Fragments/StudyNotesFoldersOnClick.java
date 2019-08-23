@@ -27,6 +27,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ import com.studinotes.AdapterClass.AddSubFolder;
 import com.studinotes.AdapterClass.StudyNotes_adapter;
 import com.studinotes.AdapterClass.TimeManagement_adapter;
 import com.studinotes.Constant.AppConfig;
+import com.studinotes.MainActivity;
 import com.studinotes.Utils.FeedItem;
 import com.studinotes.Utils.GlobalClass;
 import com.studinotes.Utils.Shared_Preference;
@@ -91,9 +93,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.hzw.doodle.DoodleActivity;
+import cn.hzw.doodle.DoodleParams;
+import cn.hzw.doodle.DoodleView;
 import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
+import static cn.hzw.doodle.DoodleActivity.KEY_PARAMS;
 import static com.studinotes.Fragments.TipsnTricks.TAG;
 
 public class StudyNotesFoldersOnClick extends Fragment {
@@ -122,13 +128,14 @@ public class StudyNotesFoldersOnClick extends Fragment {
     TextView textFile,textView;
     File imageFile;
 
+
     Context context;
     String extension_withdot;
     EditText search_folder_file;
     AdapterListFolder adapterListFolder;;
    String TAG="StudyNotesFoldersOnClick";
     TextView tv_name1;
-
+    public static final int REQ_CODE_DOODLE = 101;
     StudyNotesFoldersOnClick_Folder adapter;
     private static final int PICKFILE_RESULT_CODE = 1;
     private static  final int PICK_IMAGE=1;
@@ -154,6 +161,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.studynotesfoldersonclick, container, false);
+
 
         sharedpreference = new Sharedpreference(getActivity());
         main_layout = rootView.findViewById(R.id.main_layout);
@@ -276,6 +284,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
                 Button upload_doc = dialog1.findViewById(R.id.upload);
                 Button add_video = dialog1.findViewById(R.id.add_video);
                 Button add_notepad = dialog1.findViewById(R.id.add_notpad);
+                Button add_drawingpad = dialog1.findViewById(R.id.add_drawingpad);
                 upload_doc.setOnClickListener(new Button.OnClickListener(){
 
                     @Override
@@ -350,6 +359,30 @@ public class StudyNotesFoldersOnClick extends Fragment {
 
                     }
                 });
+                add_drawingpad.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DoodleParams params = new DoodleParams();
+                        params.mIsFullScreen = true;
+                        // 图片路径
+                        params.mImagePath = null;
+                        // 初始画笔大小
+                        params.mPaintUnitSize = DoodleView.DEFAULT_SIZE;
+                        // 画笔颜色
+                        params.mPaintColor = Color.RED;
+                        // 是否支持缩放item
+                        params.mSupportScaleItem = true;
+
+                        Intent intent1 = new Intent(getActivity(), DoodleActivity.class);
+                        intent1.putExtra(KEY_PARAMS, params);
+                        intent1.putExtra("from", "new_file");
+                        //startActivity(intent1);
+                        startActivityForResult(intent1, REQ_CODE_DOODLE);
+                        dialog1.dismiss();
+
+                    }
+                });
+
                 // if button is clicked, close the custom dialog
                 dialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -636,14 +669,24 @@ public class StudyNotesFoldersOnClick extends Fragment {
     }
 
 
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         Uri uri = new Uri.Builder().build();
+        Log.d(TAG, "onActivityResultWith: "+resultCode);
+        Log.d(TAG, "onActivityResultWith: "+requestCode);
+        Log.d(TAG, "onActivityResultWith: "+data);
+
+
         if ( resultCode == RESULT_OK && data != null) {
+
             switch (requestCode) {
+
                 case PICKFILE_REQUEST_CODE: {
                     String path = new File(data.getData().getPath()).getAbsolutePath();
+                    Log.d(TAG, "onActivityResultWith: "+data);
+
                     String path1=data.getData().getPath();
+                    Log.d(TAG, "Path: "+path);
 
                     if (path != null) {
                         uri = data.getData();
@@ -651,6 +694,7 @@ public class StudyNotesFoldersOnClick extends Fragment {
 
                         try {
                             imageFile = new File(getFilePath(getActivity(),uri));
+                            Log.d(TAG, "imageFile: "+imageFile);
                              fileSizeInBytes = imageFile.length();
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
@@ -722,6 +766,54 @@ public class StudyNotesFoldersOnClick extends Fragment {
                     }
                     break;
                 }
+                case REQ_CODE_DOODLE:{
+                    String path2 = String.valueOf(new File( data.getStringExtra(DoodleActivity.KEY_IMAGE_PATH)));
+                  // String path = new File(path2.getPath()).getAbsolutePath();
+                    imageFile= new File(path2);
+                    Log.d(TAG, "nnewFile: "+imageFile);
+                   // File file = new File(getPath(uri));
+                    if (path2 != null) {
+                        uri = data.getData();
+                        Log.d(TAG, "uri: "+uri);
+
+
+                          //  imageFile = new File(getFilePath(getActivity(),uri));
+                            fileSizeInBytes = imageFile.length();
+
+                    //    Log.d(TAG, "onActivityResult: "+imageFile);
+//                        Log.d(TAG, "onActivityResult 2: "+imageFile.getName());
+                      //  Log.d(TAG, "onActivityResult 3: "+imageFile.canExecute());
+                        Log.d(TAG, "onActivityResult: "+fileSizeInBytes);
+
+
+                        filename=imageFile.getName();
+
+                        if (filename.contains(".")){
+                            filename1  = filename.substring(0, filename.lastIndexOf("."));
+                        }else {
+                            filename1  = filename;
+                        }
+                        String extension;
+
+
+                        extension = filename.substring(filename.lastIndexOf(".") + 1);
+                        extension_withdot = filename.substring(filename.lastIndexOf(".") );
+
+
+                        Log.d(TAG, "onActivityResult: "+extension);
+                        Log.d(TAG, "filename2: "+filename1);
+                        Log.d(TAG, "filename1: "+extension_withdot);
+                        if(extension.equals("jpeg")||(extension.equals("jpg"))||(extension.equals("png"))){
+                            file_type="DrawingPad";
+                        }
+
+                        CustomDialog();
+                    }
+
+
+
+                }
+
             }
         }
     }
@@ -925,6 +1017,8 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
         Utils.changeBackgroundColor(getActivity(), main_layout, sharedpreference.getStyle());
 
         super.onResume();
+
+
     }
     public void FolderListSearch(final String search) {
         // Tag used to cancel the request
@@ -1318,7 +1412,6 @@ public static String getFilePath(Context context, Uri uri) throws URISyntaxExcep
 
         return view;
     }
-
 
 
 }

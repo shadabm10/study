@@ -24,11 +24,11 @@ public class MiddleDoodleView extends View {
     private final static String TAG = "MiddleDoodleView";
 
     private Paint mPaint = new Paint();
-    private List<PathItem> mPathList = new ArrayList<>(); // 保存涂鸦轨迹的集合
-    private TouchGestureDetector mTouchGestureDetector; // 触摸手势监听
+    private List<PathItem> mPathList = new ArrayList<>(); //
+    private TouchGestureDetector mTouchGestureDetector; //
     private float mLastX, mLastY;
-    private PathItem mCurrentPathItem; // 当前的涂鸦轨迹
-    private PathItem mSelectedPathItem; // 选中的涂鸦轨迹
+    private PathItem mCurrentPathItem; //
+    private PathItem mSelectedPathItem; //
 
     public MiddleDoodleView(Context context) {
         super(context);
@@ -45,18 +45,18 @@ public class MiddleDoodleView extends View {
             RectF mRectF = new RectF();
 
             @Override
-            public boolean onSingleTapUp(MotionEvent e) { // 单击选中
+            public boolean onSingleTapUp(MotionEvent e) {
                 boolean found = false;
-                for (PathItem path : mPathList) { // 绘制涂鸦轨迹
-                    path.mPath.computeBounds(mRectF, true); // 计算涂鸦轨迹的矩形范围
-                    mRectF.offset(path.mX, path.mY); // 加上偏移
-                    if (mRectF.contains(e.getX(), e.getY())) { // 判断是否点中涂鸦轨迹的矩形范围内
+                for (PathItem path : mPathList) { //
+                    path.mPath.computeBounds(mRectF, true);
+                    mRectF.offset(path.mX, path.mY); //
+                    if (mRectF.contains(e.getX(), e.getY())) { //
                         found = true;
                         mSelectedPathItem = path;
                         break;
                     }
                 }
-                if (!found) { // 没有点中任何涂鸦
+                if (!found) { //
                     mSelectedPathItem = null;
                 }
                 invalidate();
@@ -64,11 +64,11 @@ public class MiddleDoodleView extends View {
             }
 
             @Override
-            public void onScrollBegin(MotionEvent e) { // 滑动开始
+            public void onScrollBegin(MotionEvent e) { //
                 Log.d(TAG, "onScrollBegin: ");
                 if (mSelectedPathItem == null) {
-                    mCurrentPathItem = new PathItem(); // 新的涂鸦
-                    mPathList.add(mCurrentPathItem); // 添加的集合中
+                    mCurrentPathItem = new PathItem(); //
+                    mPathList.add(mCurrentPathItem); //
                     mCurrentPathItem.mPath.moveTo(e.getX(), e.getY());
                     mLastX = e.getX();
                     mLastY = e.getY();
@@ -79,34 +79,34 @@ public class MiddleDoodleView extends View {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { // 滑动中
                 Log.d(TAG, "onScroll: " + e2.getX() + " " + e2.getY());
-                if (mSelectedPathItem == null) { // 没有选中的涂鸦
+                if (mSelectedPathItem == null) { //
                     mCurrentPathItem.mPath.quadTo(
                             mLastX,
                             mLastY,
                             (e2.getX() + mLastX) / 2,
-                            (e2.getY() + mLastY) / 2); // 使用贝塞尔曲线 让涂鸦轨迹更圆滑
+                            (e2.getY() + mLastY) / 2); //
                     mLastX = e2.getX();
                     mLastY = e2.getY();
-                } else { // 移动选中的涂鸦
+                } else { //
                     mSelectedPathItem.mX = mSelectedPathItem.mX - distanceX;
                     mSelectedPathItem.mY = mSelectedPathItem.mY - distanceY;
                 }
-                invalidate(); // 刷新
+                invalidate(); //
                 return true;
             }
 
             @Override
-            public void onScrollEnd(MotionEvent e) { // 滑动结束
+            public void onScrollEnd(MotionEvent e) { //
                 Log.d(TAG, "onScrollEnd: ");
                 if (mSelectedPathItem == null) {
                     mCurrentPathItem.mPath.quadTo(
                             mLastX,
                             mLastY,
                             (e.getX() + mLastX) / 2,
-                            (e.getY() + mLastY) / 2); // 使用贝塞尔曲线 让涂鸦轨迹更圆滑
-                    mCurrentPathItem = null; // 轨迹结束
+                            (e.getY() + mLastY) / 2); //
+                    mCurrentPathItem = null; //
                 }
-                invalidate(); // 刷新
+                invalidate(); //
             }
 
         });
